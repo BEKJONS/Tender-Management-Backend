@@ -1,0 +1,262 @@
+definitions:
+  entity.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  entity.LogInReq:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.LogInRes:
+    properties:
+      access_token:
+        type: string
+      expire_at:
+        type: integer
+      refresh_token:
+        type: string
+      user_id:
+        type: string
+    type: object
+  entity.Message:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.RegisterReq:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.RegisterRes:
+    properties:
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.Tender:
+    properties:
+      budget:
+        type: number
+      client_id:
+        type: string
+      deadline:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+  entity.TenderReq:
+    properties:
+      budget:
+        type: number
+      client_id:
+        type: string
+      deadline:
+        type: string
+      description:
+        type: string
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login for admin users
+      parameters:
+      - description: Admin login
+        in: body
+        name: Login
+        required: true
+        schema:
+          $ref: '#/definitions/entity.LogInReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.LogInRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Admin Login
+      tags:
+      - User
+  /auth/user/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user account
+      parameters:
+      - description: Create user
+        in: body
+        name: CreateUser
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RegisterReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.RegisterRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Create User
+      tags:
+      - User
+  /tenders:
+    get:
+      consumes:
+      - application/json
+      description: List all tenders for a specific client
+      parameters:
+      - description: Client ID to filter tenders
+        in: query
+        name: client_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Tender'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: List All Tenders
+      tags:
+      - Tender
+    post:
+      consumes:
+      - application/json
+      description: Create a new tender for a client with details like title, description,
+        deadline, and budget.
+      parameters:
+      - description: Create tender
+        in: body
+        name: CreateTender
+        required: true
+        schema:
+          $ref: '#/definitions/entity.TenderReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Tender'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Create Tender
+      tags:
+      - Tender
+  /tenders/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a tender by its ID
+      parameters:
+      - description: Tender ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Delete Tender
+      tags:
+      - Tender
+    put:
+      consumes:
+      - application/json
+      description: Update the status of a tender (open, closed, awarded)
+      parameters:
+      - description: Tender ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New tender status (open, closed, awarded)
+        in: body
+        name: status
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Update Tender Status
+      tags:
+      - Tender
+securityDefinitions:
+  BearerAuth:
+    description: Enter your bearer token here
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

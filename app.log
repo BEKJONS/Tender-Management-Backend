@@ -1,0 +1,2 @@
+{"time":"2024-11-16T18:19:22.506022925+05:00","level":"ERROR","msg":"Error in adding user","error":"failed to create user: pq: column \"username\" of relation \"users\" does not exist"}
+{"time":"2024-11-16T18:19:22.50612096+05:00","level":"ERROR","msg":"Error in creating user","error":"failed to create user: pq: column \"username\" of relation \"users\" does not exist"}
