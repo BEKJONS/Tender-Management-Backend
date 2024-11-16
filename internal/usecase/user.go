@@ -29,7 +29,11 @@ func (u *UserUseCase) AddUser(in entity.RegisterReq) (*entity.RegisterRes, error
 
 	in.Password = hash
 
-	res, err := u.repo.CreateUser(entity.User{Username: in.Username, Password: in.Password, Role: "client", Email: in.Email})
+	if in.Role == "" {
+		in.Role = "contractor"
+	}
+
+	res, err := u.repo.CreateUser(entity.User{Username: in.Username, Password: in.Password, Role: in.Role, Email: in.Email})
 	if err != nil {
 		u.log.Error("Error in adding user", "error", err)
 		return nil, err

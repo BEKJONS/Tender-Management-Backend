@@ -231,7 +231,7 @@ const docTemplate = `{
         },
         "/tenders/{id}/bids": {
             "get": {
-                "description": "Get a list of bids for a tender with optional filters for price and delivery time, and sorting.",
+                "description": "Get a list of bids for a tender with optional filters for price, delivery time, and comments or status.",
                 "consumes": [
                     "application/json"
                 ],
@@ -257,8 +257,20 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Sort by price or delivery_time",
-                        "name": "sort_by",
+                        "description": "Filter by comments",
+                        "name": "comments",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Client ID to filter tenders",
+                        "name": "client_id",
                         "in": "query"
                     }
                 ],
@@ -339,45 +351,6 @@ const docTemplate = `{
             }
         },
         "/tenders/{tender_id}/bids": {
-            "get": {
-                "description": "Contractors can view all bids for a tender",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Tender"
-                ],
-                "summary": "Get all bids for a specific tender",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Tender ID",
-                        "name": "tender_id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/entity.Bid"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "Contractors can submit bids on open tenders",
                 "consumes": [
@@ -387,7 +360,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Tender"
+                    "Bids"
                 ],
                 "summary": "Submit a bid on a tender",
                 "parameters": [
@@ -532,6 +505,9 @@ const docTemplate = `{
                 "password": {
                     "type": "string"
                 },
+                "role": {
+                    "type": "string"
+                },
                 "username": {
                     "type": "string"
                 }
@@ -587,9 +563,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "description": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "string"
                 },
                 "title": {

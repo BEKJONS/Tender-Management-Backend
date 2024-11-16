@@ -35,6 +35,7 @@ func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, log *slog.Log
 // @Router /tenders/{tender_id}/bids [post]
 func (b *bidRoutes) submitBid(c *gin.Context) {
 	var bid entity.Bid
+
 	tenderID := c.Param("id")
 
 	if err := c.ShouldBindJSON(&bid); err != nil {

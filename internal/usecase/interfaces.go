@@ -7,10 +7,10 @@ type UsersRepo interface {
 	GetUserByUsername(username string) (entity.User, error)
 }
 type TenderRepo interface {
-	CreateTender(in entity.TenderReq) (entity.Tender, error)
+	CreateTender(in entity.TenderRepoReq) (entity.Tender, error)
 	GetTender(tenderID string) (entity.Tender, error)
 	ListTenders(clientID string) ([]entity.Tender, error)
-	UpdateTenderStatus(tenderID string, status string) (entity.Message, error)
+	UpdateTenderStatus(tender *entity.UpdateTender) (entity.Message, error)
 	DeleteTender(tenderID string) (entity.Message, error)
 }
 

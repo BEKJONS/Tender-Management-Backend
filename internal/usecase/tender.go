@@ -16,8 +16,10 @@ type TenderService struct {
 func NewTenderService(repo TenderRepo, log *slog.Logger) *TenderService {
 	return &TenderService{repo: repo, log: log}
 }
+
 func (s *TenderService) CreateTender(in entity.TenderReq) (entity.Tender, error) {
 	s.log.Info("started creating tender", "title", in.Title)
+
 	defer s.log.Info("ended creating tender", "title", in.Title)
 
 	// Validation checks
@@ -25,22 +27,27 @@ func (s *TenderService) CreateTender(in entity.TenderReq) (entity.Tender, error)
 		s.log.Error("error creating tender", "error", errors.New("title is required"))
 		return entity.Tender{}, errors.New("title is required")
 	}
-	if in.Deadline.Before(time.Now()) {
+
+	if in.Deadline.After(time.Now()) {
 		s.log.Error("error creating tender", "error", errors.New("deadline must be in the future"))
 		return entity.Tender{}, errors.New("deadline must be in the future")
 	}
+
 	if in.Budget <= 0 {
 		s.log.Error("error creating tender", "error", errors.New("budget must be greater than 0"))
 		return entity.Tender{}, errors.New("budget must be greater than 0")
 	}
 
-	// Set default status if not provided
-	if in.Status == "" {
-		in.Status = "open"
+	req := entity.TenderRepoReq{
+		ClientID:    in.ClientID,
+		Title:       in.Title,
+		Description: in.Description,
+		Deadline:    in.Deadline,
+		Budget:      in.Budget,
+		Status:      "open",
 	}
 
-	// Call repository to create the tender
-	tender, err := s.repo.CreateTender(in)
+	tender, err := s.repo.CreateTender(req)
 	if err != nil {
 		s.log.Error("error creating tender", "error", err)
 		return entity.Tender{}, err
@@ -72,19 +79,19 @@ func (s *TenderService) ListTenders(clientID string) ([]entity.Tender, error) {
 	return tenders, nil
 }
 
-func (s *TenderService) UpdateTenderStatus(tenderID, status string) (entity.Message, error) {
-	s.log.Info("started updating tender status", "id", tenderID, "status", status)
-	defer s.log.Info("ended updating tender status", "id", tenderID, "status", status)
+func (s *TenderService) UpdateTenderStatus(req *entity.UpdateTender) (entity.Message, error) {
+	s.log.Info("started updating tender status", "id", req.Id, "status", req.Status)
+	defer s.log.Info("ended updating tender status", "id", req.Id, "status", req.Status)
 
 	// Validating the status value
 	validStatuses := map[string]bool{"open": true, "closed": true, "awarded": true}
-	if !validStatuses[status] {
+	if !validStatuses[req.Status] {
 		s.log.Error("error updating tender status", "error", errors.New("invalid status value"))
 		return entity.Message{}, errors.New("invalid status value")
 	}
 
 	// Call repository to update status
-	msg, err := s.repo.UpdateTenderStatus(tenderID, status)
+	msg, err := s.repo.UpdateTenderStatus(req)
 	if err != nil {
 		s.log.Error("error updating tender status", "error", err)
 		return entity.Message{}, err

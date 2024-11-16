@@ -65,6 +65,8 @@ definitions:
         type: string
       password:
         type: string
+      role:
+        type: string
       username:
         type: string
     type: object
@@ -101,8 +103,6 @@ definitions:
       deadline:
         type: string
       description:
-        type: string
-      status:
         type: string
       title:
         type: string
@@ -289,8 +289,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get a list of bids for a tender with optional filters for price
-        and delivery time, and sorting.
+      description: Get a list of bids for a tender with optional filters for price,
+        delivery time, and comments or status.
       parameters:
       - description: Filter by price
         in: query
@@ -300,9 +300,17 @@ paths:
         in: query
         name: delivery_time
         type: integer
-      - description: Sort by price or delivery_time
+      - description: Filter by comments
         in: query
-        name: sort_by
+        name: comments
+        type: string
+      - description: Filter by status
+        in: query
+        name: status
+        type: string
+      - description: Client ID to filter tenders
+        in: query
+        name: client_id
         type: string
       produces:
       - application/json
@@ -325,32 +333,6 @@ paths:
       tags:
       - Bids
   /tenders/{tender_id}/bids:
-    get:
-      consumes:
-      - application/json
-      description: Contractors can view all bids for a tender
-      parameters:
-      - description: Tender ID
-        in: path
-        name: tender_id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/entity.Bid'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/entity.Error'
-      summary: Get all bids for a specific tender
-      tags:
-      - Tender
     post:
       consumes:
       - application/json
@@ -384,7 +366,7 @@ paths:
             $ref: '#/definitions/entity.Error'
       summary: Submit a bid on a tender
       tags:
-      - Tender
+      - Bids
 securityDefinitions:
   BearerAuth:
     description: Enter your bearer token here

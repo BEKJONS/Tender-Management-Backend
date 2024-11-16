@@ -93,11 +93,16 @@ func (t *tenderRoutes) listTenders(c *gin.Context) {
 // @Failure 500 {object} entity.Error
 // @Router /tenders/{id}/{status} [put]
 func (t *tenderRoutes) updateTenderStatus(c *gin.Context) {
-	tenderID := c.Param("id")
-	status := c.Param("status")
+	req := entity.UpdateTender{}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		t.log.Error("Error in getting from body", "error", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	// Update status via service
-	msg, err := t.ts.UpdateTenderStatus(tenderID, status)
+	msg, err := t.ts.UpdateTenderStatus(&req)
 	if err != nil {
 		t.log.Error("Error in updating tender status", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

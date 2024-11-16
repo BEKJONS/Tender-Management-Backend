@@ -16,6 +16,7 @@ func NewBidUseCase(bidRepo BidRepo, log *slog.Logger) *BidService {
 }
 
 func (b *BidService) SubmitBid(bid entity.Bid) (entity.Bid, error) {
+
 	b.log.Info("started submitting bid", "tender_id", bid.TenderID)
 	defer b.log.Info("ended submitting bid", "tender_id", bid.TenderID)
 

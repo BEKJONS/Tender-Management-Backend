@@ -3,7 +3,9 @@ package repo
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"strings"
 	"tender_management/internal/entity"
+	"tender_management/internal/usecase"
 )
 
 type TenderRepo struct {
@@ -11,12 +13,12 @@ type TenderRepo struct {
 }
 
 // NewTenderRepo creates a new instance of TenderRepo.
-func NewTenderRepo(db *sqlx.DB) *TenderRepo {
+func NewTenderRepo(db *sqlx.DB) usecase.TenderRepo {
 	return &TenderRepo{db: db}
 }
 
 // CreateTender inserts a new tender record into the database.
-func (r *TenderRepo) CreateTender(in entity.TenderReq) (entity.Tender, error) {
+func (r *TenderRepo) CreateTender(in entity.TenderRepoReq) (entity.Tender, error) {
 	query := `
 		INSERT INTO tenders (client_id, title, description, deadline, budget, status)
 		VALUES ($1, $2, $3, $4, $5, $6)
@@ -68,19 +70,69 @@ func (r *TenderRepo) ListTenders(clientID string) ([]entity.Tender, error) {
 }
 
 // UpdateTenderStatus updates the status of a tender.
-func (r *TenderRepo) UpdateTenderStatus(tenderID string, status string) (entity.Message, error) {
-	query := `
-		UPDATE tenders
-		SET status = $1
-		WHERE id = $2
-		RETURNING id
-	`
-	var id string
-	err := r.db.QueryRow(query, status, tenderID).Scan(&id)
-	if err != nil {
-		return entity.Message{}, fmt.Errorf("failed to update tender status: %w", err)
+func (r *TenderRepo) UpdateTenderStatus(tender *entity.UpdateTender) (entity.Message, error) {
+	// Базовая проверка на ID
+	if tender.Id == "" {
+		return entity.Message{}, fmt.Errorf("tender ID is required")
 	}
-	return entity.Message{Message: "Tender status updated successfully"}, nil
+
+	// Динамическое построение SQL
+	updates := []string{}
+	args := []interface{}{}
+	argIndex := 1
+
+	if tender.Title != "" {
+		updates = append(updates, fmt.Sprintf("title = $%d", argIndex))
+		args = append(args, tender.Title)
+		argIndex++
+	}
+
+	if tender.Description != "" {
+		updates = append(updates, fmt.Sprintf("description = $%d", argIndex))
+		args = append(args, tender.Description)
+		argIndex++
+	}
+
+	if !tender.Deadline.IsZero() {
+		updates = append(updates, fmt.Sprintf("deadline = $%d", argIndex))
+		args = append(args, tender.Deadline)
+		argIndex++
+	}
+
+	if tender.Budget > 0 {
+		updates = append(updates, fmt.Sprintf("budget = $%d", argIndex))
+		args = append(args, tender.Budget)
+		argIndex++
+	}
+
+	if tender.Status != "" {
+		updates = append(updates, fmt.Sprintf("status = $%d", argIndex))
+		args = append(args, tender.Status)
+		argIndex++
+	}
+
+	if len(updates) == 0 {
+		return entity.Message{}, fmt.Errorf("no fields to update")
+	}
+
+	// Добавить условие WHERE для ID
+	args = append(args, tender.Id)
+	query := fmt.Sprintf(`
+		UPDATE tenders
+		SET %s
+		WHERE id = $%d
+		RETURNING id
+	`, strings.Join(updates, ", "), argIndex)
+
+	var updatedId string
+	err := r.db.QueryRowx(query, args...).Scan(&updatedId)
+	if err != nil {
+		return entity.Message{}, fmt.Errorf("failed to update tender: %w", err)
+	}
+
+	return entity.Message{
+		Message: fmt.Sprintf("Tender with ID %s successfully updated", updatedId),
+	}, nil
 }
 
 // DeleteTender removes a tender by its ID.
