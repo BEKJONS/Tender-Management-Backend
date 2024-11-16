@@ -148,3 +148,43 @@ func (r *TenderRepo) DeleteTender(tenderID string) (entity.Message, error) {
 	rows, _ := res.RowsAffected()
 	return entity.Message{Message: fmt.Sprintf("Deleted %d tender(s)", rows)}, nil
 }
+
+func (r *TenderRepo) GetUserTenders(userID string) ([]entity.Tender, error) {
+	// Проверка входных данных
+	if userID == "" {
+		return nil, fmt.Errorf("userID cannot be empty")
+	}
+
+	// SQL-запрос для получения тендеров
+	query := `
+        SELECT id, title, description, deadline, budget, status
+        FROM tenders
+        WHERE client_id = $1
+    `
+
+	// Создаем слайс для хранения результата
+	var tenders []entity.Tender
+
+	// Выполняем запрос
+	rows, err := r.db.Queryx(query, userID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tenders for user: %w", err)
+	}
+	defer rows.Close()
+
+	// Проходимся по результатам
+	for rows.Next() {
+		var tender entity.Tender
+		if err := rows.StructScan(&tender); err != nil {
+			return nil, fmt.Errorf("failed to scan tender: %w", err)
+		}
+		tenders = append(tenders, tender)
+	}
+
+	// Проверяем на ошибки чтения строк
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating over rows: %w", err)
+	}
+
+	return tenders, nil
+}

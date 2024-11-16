@@ -110,3 +110,16 @@ func (s *TenderService) DeleteTender(tenderID string) (entity.Message, error) {
 	}
 	return msg, nil
 }
+
+func (s *TenderService) GetUserTenders(clientID string) ([]entity.Tender, error) {
+	s.log.Info("started getting user tenders", "clientID", clientID)
+	defer s.log.Info("ended getting user tenders", "clientID", clientID)
+
+	res, err := s.repo.GetUserTenders(clientID)
+	if err != nil {
+		s.log.Error("error getting user tenders", "error", err)
+		return nil, err
+	}
+
+	return res, nil
+}

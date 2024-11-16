@@ -52,3 +52,14 @@ func (b *BidService) GetBids(in entity.ListBidReq) ([]entity.Bid, error) {
 	}
 	return bids, nil
 }
+
+func (b *BidService) GetUserBids(in string) ([]entity.Bid, error) {
+
+	res, err := b.bidRepo.GetUserBids(in)
+	if err != nil {
+		b.log.Error("error getting user bids", "error", err)
+		return nil, err
+	}
+
+	return res, nil
+}

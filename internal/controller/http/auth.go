@@ -1,6 +1,7 @@
 package http
 
 import (
+	"regexp"
 	_ "tender_management/docs"
 
 	"github.com/gin-gonic/gin"
@@ -76,6 +77,13 @@ func (a *authRoutes) createUser(c *gin.Context) {
 		return
 	}
 
+	check := isValidEmail(req.Email)
+	if !check {
+		a.log.Error("Invalid email format")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email format"})
+		return
+	}
+
 	res, err := a.us.AddUser(req)
 	if err != nil {
 		a.log.Error("Error in creating user", "error", err)
@@ -84,6 +92,13 @@ func (a *authRoutes) createUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
+}
+
+func isValidEmail(email string) bool {
+	// Регулярное выражение для проверки email
+	regex := `^[a-zA-Z0-9._%+-]+@gmail\.com$`
+	re := regexp.MustCompile(regex)
+	return re.MatchString(email)
 }
 
 //

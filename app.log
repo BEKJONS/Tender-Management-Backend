@@ -44,3 +44,5 @@
 {"time":"2024-11-16T22:12:41.842178809+05:00","level":"ERROR","msg":"error getting bids by tender ID","error":"pq: invalid input syntax for type uuid: \"{id}\""}
 {"time":"2024-11-16T22:12:41.84222156+05:00","level":"INFO","msg":"ended getting bids by tender ID","tender_id":"{id}"}
 {"time":"2024-11-16T22:12:41.842235998+05:00","level":"ERROR","msg":"Error in fetching bids","error":"pq: invalid input syntax for type uuid: \"{id}\""}
+{"time":"2024-11-17T01:42:16.285952397+05:00","level":"ERROR","msg":"error getting user bids","error":"failed to get bids for user: pq: invalid input syntax for type uuid: \"asdf\""}
+{"time":"2024-11-17T01:42:16.286710457+05:00","level":"ERROR","msg":"Error retrieving user bids","error":"failed to get bids for user: pq: invalid input syntax for type uuid: \"asdf\""}

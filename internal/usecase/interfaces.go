@@ -12,9 +12,11 @@ type TenderRepo interface {
 	ListTenders(clientID string) ([]entity.Tender, error)
 	UpdateTenderStatus(tender *entity.UpdateTender) (entity.Message, error)
 	DeleteTender(tenderID string) (entity.Message, error)
+	GetUserTenders(userID string) ([]entity.Tender, error)
 }
 
 type BidRepo interface {
 	SubmitBid(bid entity.Bid) (entity.Bid, error)
 	GetBids(in entity.ListBidReq) ([]entity.Bid, error)
+	GetUserBids(userID string) ([]entity.Bid, error)
 }
