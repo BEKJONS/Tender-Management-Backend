@@ -1,2 +1,46 @@
 {"time":"2024-11-16T18:19:22.506022925+05:00","level":"ERROR","msg":"Error in adding user","error":"failed to create user: pq: column \"username\" of relation \"users\" does not exist"}
 {"time":"2024-11-16T18:19:22.50612096+05:00","level":"ERROR","msg":"Error in creating user","error":"failed to create user: pq: column \"username\" of relation \"users\" does not exist"}
+{"time":"2024-11-16T19:48:21.779563308+05:00","level":"INFO","msg":"started creating tender","title":"New Tender"}
+{"time":"2024-11-16T19:48:21.79966829+05:00","level":"ERROR","msg":"error creating tender","error":"failed to create tender: pq: insert or update on table \"tenders\" violates foreign key constraint \"tenders_client_id_fkey\""}
+{"time":"2024-11-16T19:48:21.799716197+05:00","level":"INFO","msg":"ended creating tender","title":"New Tender"}
+{"time":"2024-11-16T19:48:21.7997342+05:00","level":"ERROR","msg":"Error in creating tender","error":"failed to create tender: pq: insert or update on table \"tenders\" violates foreign key constraint \"tenders_client_id_fkey\""}
+{"time":"2024-11-16T19:49:30.001969171+05:00","level":"INFO","msg":"started creating tender","title":"New Tender"}
+{"time":"2024-11-16T19:49:30.008193473+05:00","level":"INFO","msg":"ended creating tender","title":"New Tender"}
+{"time":"2024-11-16T19:49:40.487282688+05:00","level":"INFO","msg":"started listing tenders","clientID":""}
+{"time":"2024-11-16T19:49:40.487951588+05:00","level":"INFO","msg":"ended listing tenders","clientID":""}
+{"time":"2024-11-16T19:50:50.862118407+05:00","level":"ERROR","msg":"Error in getting from body","error":"invalid character 'c' looking for beginning of object key string"}
+{"time":"2024-11-16T19:51:04.948268944+05:00","level":"ERROR","msg":"Error in getting from body","error":"invalid character '}' after object key"}
+{"time":"2024-11-16T19:51:11.665952982+05:00","level":"ERROR","msg":"Error in getting from body","error":"invalid character ',' after object key"}
+{"time":"2024-11-16T19:51:37.28606776+05:00","level":"ERROR","msg":"Error in getting from body","error":"invalid character '}' after object key"}
+{"time":"2024-11-16T19:52:09.605942491+05:00","level":"ERROR","msg":"Error in getting from body","error":"invalid character 'c' looking for beginning of value"}
+{"time":"2024-11-16T19:52:21.955612718+05:00","level":"ERROR","msg":"Error in getting from body","error":"json: cannot unmarshal string into Go value of type entity.StatusRequest"}
+{"time":"2024-11-16T19:53:40.777552069+05:00","level":"ERROR","msg":"Error in getting from body","error":"invalid character 'c' looking for beginning of value"}
+{"time":"2024-11-16T19:53:52.518439428+05:00","level":"ERROR","msg":"Error in getting from body","error":"json: cannot unmarshal string into Go value of type entity.StatusRequest"}
+{"time":"2024-11-16T19:54:25.998843827+05:00","level":"ERROR","msg":"Error in getting from body","error":"invalid character 'c' looking for beginning of value"}
+{"time":"2024-11-16T19:54:37.562427372+05:00","level":"INFO","msg":"started updating tender status","id":"8ad9720e-8ea1-45c6-9498-7031fe05e2fd","status":"closed"}
+{"time":"2024-11-16T19:54:37.568963425+05:00","level":"INFO","msg":"ended updating tender status","id":"8ad9720e-8ea1-45c6-9498-7031fe05e2fd","status":"closed"}
+{"time":"2024-11-16T19:55:27.583946881+05:00","level":"INFO","msg":"started deleting tender","id":"8ad9720e-8ea1-45c6-9498-7031fe05e2fd"}
+{"time":"2024-11-16T19:55:27.592243559+05:00","level":"INFO","msg":"ended deleting tender","id":"8ad9720e-8ea1-45c6-9498-7031fe05e2fd"}
+{"time":"2024-11-16T20:55:58.300941445+05:00","level":"INFO","msg":"started creating tender","title":"New Tender"}
+{"time":"2024-11-16T20:55:58.303113798+05:00","level":"ERROR","msg":"error creating tender","error":"failed to create tender: pq: insert or update on table \"tenders\" violates foreign key constraint \"tenders_client_id_fkey\""}
+{"time":"2024-11-16T20:55:58.303140298+05:00","level":"INFO","msg":"ended creating tender","title":"New Tender"}
+{"time":"2024-11-16T20:55:58.303147912+05:00","level":"ERROR","msg":"Error in creating tender","error":"failed to create tender: pq: insert or update on table \"tenders\" violates foreign key constraint \"tenders_client_id_fkey\""}
+{"time":"2024-11-16T20:56:21.873911236+05:00","level":"INFO","msg":"started creating tender","title":"New Tender"}
+{"time":"2024-11-16T20:56:21.880115054+05:00","level":"INFO","msg":"ended creating tender","title":"New Tender"}
+{"time":"2024-11-16T20:57:05.153667529+05:00","level":"INFO","msg":"started submitting bid","tender_id":"86251688-b6f7-4c21-b343-d031c49fa29c"}
+{"time":"2024-11-16T20:57:05.160462887+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"86251688-b6f7-4c21-b343-d031c49fa29c"}
+{"time":"2024-11-16T20:58:29.246267843+05:00","level":"INFO","msg":"started submitting bid","tender_id":"86251688-b6f7-4c21-b343-d031c49fa29c"}
+{"time":"2024-11-16T20:58:29.248605506+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"86251688-b6f7-4c21-b343-d031c49fa29c"}
+{"time":"2024-11-16T21:00:38.385412013+05:00","level":"INFO","msg":"started submitting bid","tender_id":"86251688-b6f7-4c21-b343-d031c49fa29c"}
+{"time":"2024-11-16T21:00:38.392637943+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"86251688-b6f7-4c21-b343-d031c49fa29c"}
+{"time":"2024-11-16T21:06:15.480643757+05:00","level":"INFO","msg":"started getting bids by tender ID","tender_id":"86251688-b6f7-4c21-b343-d031c49fa29c"}
+{"time":"2024-11-16T21:06:15.481315715+05:00","level":"INFO","msg":"ended getting bids by tender ID","tender_id":"86251688-b6f7-4c21-b343-d031c49fa29c"}
+{"time":"2024-11-16T21:09:25.091569942+05:00","level":"ERROR","msg":"Error in getting from body","error":"invalid character 's' looking for beginning of value"}
+{"time":"2024-11-16T21:09:32.981161117+05:00","level":"ERROR","msg":"Invalid status value","status":"lol"}
+{"time":"2024-11-16T21:09:40.837555449+05:00","level":"ERROR","msg":"Invalid status value","status":"pending"}
+{"time":"2024-11-16T21:10:12.034402676+05:00","level":"INFO","msg":"started updating tender status","id":"86251688-b6f7-4c21-b343-d031c49fa29c","status":"open"}
+{"time":"2024-11-16T21:10:12.04137599+05:00","level":"INFO","msg":"ended updating tender status","id":"86251688-b6f7-4c21-b343-d031c49fa29c","status":"open"}
+{"time":"2024-11-16T22:12:41.837145959+05:00","level":"INFO","msg":"started getting bids by tender ID","tender_id":"{id}"}
+{"time":"2024-11-16T22:12:41.842178809+05:00","level":"ERROR","msg":"error getting bids by tender ID","error":"pq: invalid input syntax for type uuid: \"{id}\""}
+{"time":"2024-11-16T22:12:41.84222156+05:00","level":"INFO","msg":"ended getting bids by tender ID","tender_id":"{id}"}
+{"time":"2024-11-16T22:12:41.842235998+05:00","level":"ERROR","msg":"Error in fetching bids","error":"pq: invalid input syntax for type uuid: \"{id}\""}

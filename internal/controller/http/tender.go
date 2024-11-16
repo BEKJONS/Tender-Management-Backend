@@ -1,11 +1,10 @@
 package http
 
 import (
-	_ "tender_management/docs"
-
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
+	_ "tender_management/docs"
 	"tender_management/internal/entity"
 	"tender_management/internal/usecase"
 )
@@ -19,10 +18,10 @@ func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, log *sl
 
 	tender := tenderRoutes{ts, log}
 
-	router.POST("/tenders", tender.createTender)
-	router.GET("/tenders", tender.listTenders)
-	router.PUT("/tenders/:id", tender.updateTenderStatus)
-	router.DELETE("/tenders/:id", tender.deleteTender)
+	router.POST("/", tender.createTender)
+	router.GET("/", tender.listTenders)
+	router.PUT("/:id", tender.updateTenderStatus)
+	router.DELETE("/:id", tender.deleteTender)
 }
 
 // ------------ Handler methods --------------------------------------------------------
@@ -88,23 +87,17 @@ func (t *tenderRoutes) listTenders(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Tender ID"
-// @Param status body string true "New tender status (open, closed, awarded)"
+// @Param status path string true "Update status"
 // @Success 200 {object} entity.Message
 // @Failure 400 {object} entity.Error
 // @Failure 500 {object} entity.Error
-// @Router /tenders/{id} [put]
+// @Router /tenders/{id}/{status} [put]
 func (t *tenderRoutes) updateTenderStatus(c *gin.Context) {
 	tenderID := c.Param("id")
-	var status entity.StatusRequest
-
-	if err := c.ShouldBindJSON(&status); err != nil {
-		t.log.Error("Error in getting from body", "error", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	status := c.Param("status")
 
 	// Update status via service
-	msg, err := t.ts.UpdateTenderStatus(tenderID, status.Status)
+	msg, err := t.ts.UpdateTenderStatus(tenderID, status)
 	if err != nil {
 		t.log.Error("Error in updating tender status", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

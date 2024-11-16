@@ -40,6 +40,12 @@ type Bid struct {
 	Comments     string  `db:"comments" json:"comments"`
 	Status       string  `db:"status" json:"status"` // e.g., 'pending'
 }
+type Bid1 struct {
+	Price        float64 `db:"price" json:"price"`
+	DeliveryTime int     `db:"delivery_time" json:"delivery_time"` // in days
+	Comments     string  `db:"comments" json:"comments"`
+	Status       string  `db:"status" json:"status"` // e.g., 'pending'
+}
 
 // Notification represents a notification for a user.
 type Notification struct {
@@ -77,4 +83,12 @@ type Message struct {
 }
 type StatusRequest struct {
 	Status string `db:"status" json:"status"`
+}
+type ListBidReq struct {
+	ClientID           string   `db:"client_id" json:"client_id"`
+	TenderID           string   `db:"tender_id" json:"tender_id"`
+	PriceFilter        *float64 `db:"price_filter" json:"price_filter,omitempty"`
+	DeliveryTimeFilter *int     `db:"delivery_time_filter" json:"delivery_time_filter,omitempty"`
+	Comments           string   `db:"comments" json:"comments"`
+	Status             string   `db:"status" json:"status"`
 }

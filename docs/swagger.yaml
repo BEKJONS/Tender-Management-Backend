@@ -1,4 +1,36 @@
 definitions:
+  entity.Bid:
+    properties:
+      comments:
+        type: string
+      contractor_id:
+        type: string
+      delivery_time:
+        description: in days
+        type: integer
+      id:
+        type: string
+      price:
+        type: number
+      status:
+        description: e.g., 'pending'
+        type: string
+      tender_id:
+        type: string
+    type: object
+  entity.Bid1:
+    properties:
+      comments:
+        type: string
+      delivery_time:
+        description: in days
+        type: integer
+      price:
+        type: number
+      status:
+        description: e.g., 'pending'
+        type: string
+    type: object
   entity.Error:
     properties:
       error:
@@ -219,6 +251,7 @@ paths:
       summary: Delete Tender
       tags:
       - Tender
+  /tenders/{id}/{status}:
     put:
       consumes:
       - application/json
@@ -229,12 +262,11 @@ paths:
         name: id
         required: true
         type: string
-      - description: New tender status (open, closed, awarded)
-        in: body
+      - description: Update status
+        in: path
         name: status
         required: true
-        schema:
-          type: string
+        type: string
       produces:
       - application/json
       responses:
@@ -251,6 +283,106 @@ paths:
           schema:
             $ref: '#/definitions/entity.Error'
       summary: Update Tender Status
+      tags:
+      - Tender
+  /tenders/{id}/bids:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of bids for a tender with optional filters for price
+        and delivery time, and sorting.
+      parameters:
+      - description: Filter by price
+        in: query
+        name: price
+        type: number
+      - description: Filter by delivery time
+        in: query
+        name: delivery_time
+        type: integer
+      - description: Sort by price or delivery_time
+        in: query
+        name: sort_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Bid'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Get Bids for Tender
+      tags:
+      - Bids
+  /tenders/{tender_id}/bids:
+    get:
+      consumes:
+      - application/json
+      description: Contractors can view all bids for a tender
+      parameters:
+      - description: Tender ID
+        in: path
+        name: tender_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Bid'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Get all bids for a specific tender
+      tags:
+      - Tender
+    post:
+      consumes:
+      - application/json
+      description: Contractors can submit bids on open tenders
+      parameters:
+      - description: Tender ID
+        in: path
+        name: tender_id
+        required: true
+        type: string
+      - description: Bid details
+        in: body
+        name: bid
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Bid1'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Bid'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Submit a bid on a tender
       tags:
       - Tender
 securityDefinitions:
