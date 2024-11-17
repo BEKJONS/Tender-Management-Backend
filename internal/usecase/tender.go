@@ -5,12 +5,14 @@ import (
 	"errors"
 	"log/slog"
 	"tender_management/internal/entity"
+	"tender_management/internal/usecase/cashing"
 	"time"
 )
 
 type TenderService struct {
 	repo TenderRepo
 	bid  BidRepo
+	cash cashing.TenderCash
 	log  *slog.Logger
 }
 
@@ -68,6 +70,12 @@ func (s *TenderService) CreateTender(in entity.TenderReq) (entity.Tender, error)
 		}
 	}()
 
+	err = s.cash.SaveNewTender(&tender)
+	if err != nil {
+		s.log.Error("error saving tender", "error", err)
+		return entity.Tender{}, err
+	}
+
 	return tender, nil
 }
 
@@ -86,6 +94,26 @@ func (s *TenderService) GetTender(tenderID string) (entity.Tender, error) {
 func (s *TenderService) ListTenders(clientID string) ([]entity.Tender, error) {
 	s.log.Info("started listing tenders", "clientID", clientID)
 	defer s.log.Info("ended listing tenders", "clientID", clientID)
+
+	if clientID == "" {
+		// Using cash
+		res, err := s.cash.GetAllTenders()
+		if err == nil {
+			return res, nil
+		}
+	} else {
+		// Using cash
+		res, err := s.cash.GetUserTenders(clientID)
+		if err == nil {
+			return res, nil
+		}
+	}
+
+	// Using cash
+	res, err := s.cash.GetAllTenders()
+	if err == nil {
+		return res, nil
+	}
 
 	tenders, err := s.repo.ListTenders(clientID)
 	if err != nil {
@@ -112,6 +140,14 @@ func (s *TenderService) UpdateTenderStatus(req *entity.UpdateTender) (entity.Mes
 		s.log.Error("error updating tender status", "error", err)
 		return entity.Message{}, err
 	}
+
+	// update from cash
+	err = s.cash.UpdateTender(req)
+	if err != nil {
+		s.log.Error("error updating tender in cash", "error", err)
+		return entity.Message{}, err
+	}
+
 	return msg, nil
 }
 
@@ -124,6 +160,14 @@ func (s *TenderService) DeleteTender(tenderID string) (entity.Message, error) {
 		s.log.Error("error deleting tender", "error", err)
 		return entity.Message{}, err
 	}
+
+	//delete from cash
+	err = s.cash.DeleteTender(tenderID)
+	if err != nil {
+		s.log.Error("error deleting tender", "error", err)
+		return entity.Message{}, err
+	}
+
 	return msg, nil
 }
 
@@ -131,7 +175,13 @@ func (s *TenderService) GetUserTenders(clientID string) ([]entity.Tender, error)
 	s.log.Info("started getting user tenders", "clientID", clientID)
 	defer s.log.Info("ended getting user tenders", "clientID", clientID)
 
-	res, err := s.repo.GetUserTenders(clientID)
+	// use cashing
+	res, err := s.cash.GetUserTenders(clientID)
+	if err == nil {
+		return res, nil
+	}
+
+	res, err = s.repo.GetUserTenders(clientID)
 	if err != nil {
 		s.log.Error("error getting user tenders", "error", err)
 		return nil, err
