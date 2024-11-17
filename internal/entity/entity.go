@@ -29,6 +29,12 @@ type TenderReq struct {
 	Deadline    time.Time `db:"deadline" json:"deadline"`
 	Budget      float64   `db:"budget" json:"budget"`
 }
+type TenderReq1 struct {
+	Title       string    `db:"title" json:"title"`
+	Description string    `db:"description" json:"description"`
+	Deadline    time.Time `db:"deadline" json:"deadline"`
+	Budget      float64   `db:"budget" json:"budget"`
+}
 
 type TenderRepoReq struct {
 	ClientID    string    `db:"client_id" json:"client_id"`

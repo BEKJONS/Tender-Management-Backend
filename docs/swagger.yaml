@@ -94,12 +94,10 @@ definitions:
       title:
         type: string
     type: object
-  entity.TenderReq:
+  entity.TenderReq1:
     properties:
       budget:
         type: number
-      client_id:
-        type: string
       deadline:
         type: string
       description:
@@ -207,7 +205,7 @@ paths:
         name: CreateTender
         required: true
         schema:
-          $ref: '#/definitions/entity.TenderReq'
+          $ref: '#/definitions/entity.TenderReq1'
       produces:
       - application/json
       responses:
@@ -410,12 +408,6 @@ paths:
       consumes:
       - application/json
       description: Retrieve all bids placed by a specific user.
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -445,12 +437,6 @@ paths:
       consumes:
       - application/json
       description: Get all tenders associated with a specific user.
-      parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
       produces:
       - application/json
       responses:

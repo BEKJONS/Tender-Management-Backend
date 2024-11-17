@@ -59,6 +59,7 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 	// Submit the bid using the provided tender ID
 	newBid, err := b.us.SubmitBid(entity.Bid{
 		TenderID:     tenderID,
+		ContractorID: c.MustGet("user_id").(string),
 		Price:        bid.Price,
 		DeliveryTime: bid.DeliveryTime,
 		Comments:     bid.Comments,

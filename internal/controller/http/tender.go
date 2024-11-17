@@ -35,13 +35,13 @@ func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, casbin 
 // @Tags Tender
 // @Accept json
 // @Produce json
-// @Param CreateTender body entity.TenderReq true "Create tender"
+// @Param CreateTender body entity.TenderReq1 true "Create tender"
 // @Success 201 {object} entity.Tender
 // @Failure 400 {object} entity.Error
 // @Failure 500 {object} entity.Error
 // @Router /tenders [post]
 func (t *tenderRoutes) createTender(c *gin.Context) {
-	var req entity.TenderReq
+	var req entity.TenderReq1
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		t.log.Error("Error in getting from body", "error", err)
@@ -50,7 +50,9 @@ func (t *tenderRoutes) createTender(c *gin.Context) {
 	}
 
 	// Create tender via service
-	tender, err := t.ts.CreateTender(req)
+	tender, err := t.ts.CreateTender(entity.TenderReq{ClientID: c.MustGet("user_id").(string),
+		Title: req.Title, Description: req.Description,
+		Deadline: req.Deadline, Budget: req.Budget})
 	if err != nil {
 		t.log.Error("Error in creating tender", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -71,7 +73,7 @@ func (t *tenderRoutes) createTender(c *gin.Context) {
 // @Failure 500 {object} entity.Error
 // @Router /tenders [get]
 func (t *tenderRoutes) listTenders(c *gin.Context) {
-	clientID := c.DefaultQuery("client_id", "")
+	clientID := c.DefaultQuery("client_id", c.MustGet("user_id").(string))
 
 	tenders, err := t.ts.ListTenders(clientID)
 	if err != nil {
