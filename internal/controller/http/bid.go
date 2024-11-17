@@ -1,6 +1,7 @@
 package http
 
 import (
+	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
@@ -14,9 +15,9 @@ type bidRoutes struct {
 	log *slog.Logger
 }
 
-func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, log *slog.Logger) {
+func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, casbin *casbin.Enforcer, log *slog.Logger) {
 	bids := bidRoutes{us, log}
-
+	router.Use(PermissionMiddleware(casbin))
 	router.POST("/tenders/:id/bids", bids.submitBid)
 	router.GET("/tenders/:id/bids", bids.getSubmittedBids)
 }

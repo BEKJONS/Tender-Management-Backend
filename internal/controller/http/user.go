@@ -1,6 +1,7 @@
 package http
 
 import (
+	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
@@ -13,9 +14,9 @@ type userController struct {
 	bid *usecase.BidService
 }
 
-func newUserController(router *gin.RouterGroup, ts *usecase.TenderService, bid *usecase.BidService, log *slog.Logger) {
+func newUserController(router *gin.RouterGroup, ts *usecase.TenderService, casbin *casbin.Enforcer, bid *usecase.BidService, log *slog.Logger) {
 	user := userController{log, ts, bid}
-
+	router.Use(PermissionMiddleware(casbin))
 	router.GET("/:id/tenders", user.getUserTenders)
 	router.GET("/:id/bids", user.getUserBids)
 }

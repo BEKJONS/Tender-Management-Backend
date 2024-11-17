@@ -1,6 +1,7 @@
 package http
 
 import (
+	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
@@ -14,10 +15,10 @@ type tenderRoutes struct {
 	log *slog.Logger
 }
 
-func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, log *slog.Logger) {
+func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, casbin *casbin.Enforcer, log *slog.Logger) {
 
 	tender := tenderRoutes{ts, log}
-
+	router.Use(PermissionMiddleware(casbin))
 	router.POST("/", tender.createTender)
 	router.GET("/", tender.listTenders)
 	router.PUT("/:id/:status", tender.updateTenderStatus)

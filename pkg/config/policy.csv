@@ -1,0 +1,12 @@
+p,client,/tenders,POST
+p,client,/tenders,GET
+p,client,/tenders/:id,DELETE
+p,client,/tenders/:id/status,PUT
+p,client,/tenders/:id/award/:bid_id,POST
+p,client,/tenders/:id/bids,GET
+p,client,/users/:id/bids,GET
+
+p,contractor,/tenders/tender_id/bids,POST
+p,contractor,/users/:id/bids,GET
+p,contractor,/tenders,GET
+p,contractor,/tenders/:id/bids,GET

@@ -153,3 +153,7 @@
 {"time":"2024-11-17T13:50:44.033277732+05:00","level":"ERROR","msg":"Tender ID is missing in the request"}
 {"time":"2024-11-17T13:51:48.529015701+05:00","level":"ERROR","msg":"Tender ID is missing in the request"}
 {"time":"2024-11-17T13:52:29.101502437+05:00","level":"ERROR","msg":"Tender ID is missing in the request"}
+{"time":"2024-11-17T13:58:49.102909213+05:00","level":"INFO","msg":"started listing tenders","clientID":""}
+{"time":"2024-11-17T13:58:49.10295551+05:00","level":"INFO","msg":"ended listing tenders","clientID":""}
+{"time":"2024-11-17T13:58:50.322399412+05:00","level":"INFO","msg":"started listing tenders","clientID":""}
+{"time":"2024-11-17T13:58:50.322475215+05:00","level":"INFO","msg":"ended listing tenders","clientID":""}

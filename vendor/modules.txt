@@ -4,6 +4,9 @@ github.com/KyleBanks/depth
 # github.com/badoux/checkmail v1.2.4
 ## explicit; go 1.14
 github.com/badoux/checkmail
+# github.com/bmatcuk/doublestar/v4 v4.6.1
+## explicit; go 1.16
+github.com/bmatcuk/doublestar/v4
 # github.com/bytedance/sonic v1.12.4
 ## explicit; go 1.17
 github.com/bytedance/sonic
@@ -42,6 +45,24 @@ github.com/bytedance/sonic/utf8
 github.com/bytedance/sonic/loader
 github.com/bytedance/sonic/loader/internal/abi
 github.com/bytedance/sonic/loader/internal/rt
+# github.com/casbin/casbin/v2 v2.101.0
+## explicit; go 1.13
+github.com/casbin/casbin/v2
+github.com/casbin/casbin/v2/config
+github.com/casbin/casbin/v2/constant
+github.com/casbin/casbin/v2/effector
+github.com/casbin/casbin/v2/errors
+github.com/casbin/casbin/v2/log
+github.com/casbin/casbin/v2/model
+github.com/casbin/casbin/v2/persist
+github.com/casbin/casbin/v2/persist/cache
+github.com/casbin/casbin/v2/persist/file-adapter
+github.com/casbin/casbin/v2/rbac
+github.com/casbin/casbin/v2/rbac/default-role-manager
+github.com/casbin/casbin/v2/util
+# github.com/casbin/govaluate v1.2.0
+## explicit; go 1.13
+github.com/casbin/govaluate
 # github.com/cespare/xxhash/v2 v2.2.0
 ## explicit; go 1.11
 github.com/cespare/xxhash/v2
