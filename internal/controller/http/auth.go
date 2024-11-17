@@ -78,7 +78,6 @@ func (a *authRoutes) login(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
-
 // @Param CreateUser body entity.RegisterReq true "Create user"
 // @Success 200 {object} entity.LogInRes
 // @Failure 400 {object} entity.Error

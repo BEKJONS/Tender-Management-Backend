@@ -63,6 +63,17 @@ const docTemplate = `{
         },
         "/auth/user/register": {
             "post": {
+                "description": "Register a new user account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create User",
                 "parameters": [
                     {
                         "description": "Create user",
