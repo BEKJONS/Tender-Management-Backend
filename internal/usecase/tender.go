@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log/slog"
 	"tender_management/internal/entity"
-	"tender_management/internal/usecase/cashing"
+	"tender_management/internal/usecase/redis/cashing"
 	"time"
 )
 

@@ -6,7 +6,7 @@ import (
 	"tender_management/config"
 	"tender_management/internal/controller"
 	"tender_management/internal/controller/http"
-	"tender_management/internal/usecase/cashing"
+	"tender_management/internal/usecase/redis"
 	"tender_management/internal/usecase/token"
 	"tender_management/pkg/logger"
 	"tender_management/pkg/postgres"
@@ -26,7 +26,7 @@ func Run(cfg config.Config) {
 		log.Fatal(err)
 	}
 
-	rdb := cashing.NewRedisClient()
+	rdb := redis.NewRedisClient()
 
 	controller1 := controller.NewController(db, logger1, rdb)
 
