@@ -3,6 +3,7 @@ package http
 import (
 	"fmt"
 	"github.com/casbin/casbin/v2"
+	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -43,7 +44,6 @@ func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, casbin *casbi
 // @Failure 500 {object} entity.Error
 // @Router /tenders/{id}/bids [post]
 func (b *bidRoutes) submitBid(c *gin.Context) {
-<<<<<<< HEAD
 	var bid entity.Bid
 	claims, err := extractClaims(c)
 	if err != nil {
@@ -62,9 +62,7 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "cannot get user id"})
 		return
 	}
-=======
 	var bid entity.Bid1
->>>>>>> 29dd3dcb82467032cc2a8820dc54e6aae2a4055a
 
 	tenderID := c.Param("id")
 	if tenderID == "" {
