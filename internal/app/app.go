@@ -9,9 +9,11 @@ import (
 	"tender_management/internal/controller"
 	"tender_management/internal/controller/http"
 	"tender_management/internal/usecase/redis"
+	rate_limiting "tender_management/internal/usecase/redis/rate-limiting"
 	"tender_management/internal/usecase/token"
 	"tender_management/pkg/logger"
 	"tender_management/pkg/postgres"
+	"time"
 )
 
 func Run(cfg config.Config) {
@@ -43,8 +45,10 @@ func Run(cfg config.Config) {
 		panic(err)
 	}
 
+	rateLimit := rate_limiting.NewRateLimiter(rdb, 5, time.Minute)
+
 	engine := gin.Default()
-	http.NewRouter(engine, logger1, casbinEnforcer, controller1)
+	http.NewRouter(engine, logger1, casbinEnforcer, controller1, rateLimit)
 
 	log.Fatal(engine.Run(cfg.RUN_PORT))
 }

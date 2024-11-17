@@ -7,11 +7,39 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	rate_limiting "tender_management/internal/usecase/redis/rate-limiting"
 	"tender_management/internal/usecase/token"
 )
 
 type casbinPermission struct {
 	enforcer *casbin.Enforcer
+}
+
+func RateLimitingMiddleware(limiter *rate_limiting.RateLimiter) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		Token := c.GetHeader("Authorization")
+		if Token == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "No Authorization header found"})
+		}
+		claims, err := token.ExtractClaims(Token)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			c.Abort()
+		}
+
+		id := claims["user_id"].(string)
+
+		checkr, err := limiter.Allow(id)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		}
+
+		if !checkr {
+			c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"error": "Your limit riced per minute"})
+		}
+
+		c.Next()
+	}
 }
 
 func (c *casbinPermission) GetRole(ctx *gin.Context) (string, int) {

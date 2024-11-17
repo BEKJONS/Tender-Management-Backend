@@ -7,20 +7,24 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "tender_management/docs"
 	"tender_management/internal/controller"
+	rate_limiting "tender_management/internal/usecase/redis/rate-limiting"
 
 	"log/slog"
 )
 
-// title Api For CRM
-// version 1.0
-// description Admin Panel
-// @securityDefinitions.apiKey BearerAuth
+// @title CRM API
+// @version 1.0
+// @description Admin Panel for managing the CRM
+// @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
 // @description Enter your bearer token here
-func NewRouter(engine *gin.Engine, log *slog.Logger, casbin *casbin.Enforcer, ctr *controller.Controller) {
+// @BasePath /api/v1
+
+func NewRouter(engine *gin.Engine, log *slog.Logger, casbin *casbin.Enforcer, ctr *controller.Controller, limiting *rate_limiting.RateLimiter) {
 
 	engine.Use(CORSMiddleware())
+	engine.Use(RateLimitingMiddleware(limiting))
 
 	engine.GET("/swagger/*eny", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

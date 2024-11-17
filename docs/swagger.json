@@ -1,7 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "Admin Panel for managing the CRM",
+        "title": "CRM API",
+        "contact": {},
+        "version": "1.0"
     },
     "paths": {
         "/auth/login": {
