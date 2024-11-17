@@ -17,6 +17,9 @@ mig-force:
 mig-create:
 	migrate create -ext sql -dir migrations -seq tender_management
 
+docker-up:
+	docker compose up -d
+
 swag-gen:
 	~/go/bin/swag init -g internal/controller/http/router.go -o docs
 #   rm -r db/migrations
