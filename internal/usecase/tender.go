@@ -12,13 +12,13 @@ import (
 type TenderService struct {
 	repo TenderRepo
 	bid  BidRepo
-	cash cashing.TenderCash
+	cash *cashing.TenderCash
 	log  *slog.Logger
 }
 
 // NewTenderService creates a new instance of TenderService.
-func NewTenderService(repo TenderRepo, bid BidRepo, log *slog.Logger) *TenderService {
-	return &TenderService{repo: repo, log: log}
+func NewTenderService(repo TenderRepo, bid BidRepo, cash *cashing.TenderCash, log *slog.Logger) *TenderService {
+	return &TenderService{repo: repo, log: log, bid: bid, cash: cash}
 }
 
 func (s *TenderService) CreateTender(in entity.TenderReq) (entity.Tender, error) {
