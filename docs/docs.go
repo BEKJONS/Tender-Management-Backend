@@ -665,13 +665,10 @@ const docTemplate = `{
         "entity.LogInRes": {
             "type": "object",
             "properties": {
-                "access_token": {
-                    "type": "string"
-                },
                 "expire_at": {
                     "type": "integer"
                 },
-                "refresh_token": {
+                "token": {
                     "type": "string"
                 },
                 "user_id": {

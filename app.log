@@ -46,3 +46,17 @@
 {"time":"2024-11-16T22:12:41.842235998+05:00","level":"ERROR","msg":"Error in fetching bids","error":"pq: invalid input syntax for type uuid: \"{id}\""}
 {"time":"2024-11-17T01:42:16.285952397+05:00","level":"ERROR","msg":"error getting user bids","error":"failed to get bids for user: pq: invalid input syntax for type uuid: \"asdf\""}
 {"time":"2024-11-17T01:42:16.286710457+05:00","level":"ERROR","msg":"Error retrieving user bids","error":"failed to get bids for user: pq: invalid input syntax for type uuid: \"asdf\""}
+{"time":"2024-11-17T12:33:22.089084857+05:00","level":"INFO","msg":"Log in started","username":"string"}
+{"time":"2024-11-17T12:33:23.600043213+05:00","level":"ERROR","msg":"Error in logging in","error":"Invalid username or password"}
+{"time":"2024-11-17T12:33:23.600104058+05:00","level":"ERROR","msg":"Unauthorized login attempt","error":"Invalid username or password"}
+{"time":"2024-11-17T12:34:00.456312433+05:00","level":"INFO","msg":"Log in started","username":"straing"}
+{"time":"2024-11-17T12:34:00.457154918+05:00","level":"ERROR","msg":"Error in logging in","error":"failed to get user: sql: no rows in result set"}
+{"time":"2024-11-17T12:34:00.457210303+05:00","level":"ERROR","msg":"Error in login","error":"failed to get user: sql: no rows in result set"}
+{"time":"2024-11-17T12:34:22.125561965+05:00","level":"INFO","msg":"Log in started","username":"string"}
+{"time":"2024-11-17T12:34:23.625871627+05:00","level":"ERROR","msg":"Error in logging in","error":"Invalid username or password"}
+{"time":"2024-11-17T12:34:23.625924948+05:00","level":"ERROR","msg":"Unauthorized login attempt","error":"Invalid username or password"}
+{"time":"2024-11-17T12:34:32.076103545+05:00","level":"INFO","msg":"Log in started","username":"string"}
+{"time":"2024-11-17T12:34:33.579929299+05:00","level":"INFO","msg":"Log in ended","username":"string"}
+{"time":"2024-11-17T12:35:23.563906856+05:00","level":"INFO","msg":"Log in started","username":"strinsg"}
+{"time":"2024-11-17T12:35:23.565563921+05:00","level":"ERROR","msg":"Error in logging in","error":"failed to get user: sql: no rows in result set"}
+{"time":"2024-11-17T12:35:23.565612113+05:00","level":"ERROR","msg":"User not found","error":"failed to get user: sql: no rows in result set"}
