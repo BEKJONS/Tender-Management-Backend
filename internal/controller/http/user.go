@@ -25,6 +25,7 @@ func newUserController(router *gin.RouterGroup, ts *usecase.TenderService, casbi
 // @Summary Get User Tenders
 // @Description Get all tenders associated with a specific user.
 // @Tags User
+// @security ApiKeyAuth
 // @Accept json
 // @Produce json
 // @Success 200 {array} entity.Tender

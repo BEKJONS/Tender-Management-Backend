@@ -221,3 +221,7 @@
 {"time":"2024-11-17T14:43:28.804403442+05:00","level":"INFO","msg":"Add user started","username":"string"}
 {"time":"2024-11-17T14:43:30.31022424+05:00","level":"ERROR","msg":"Error in adding user","error":"failed to create user: pq: duplicate key value violates unique constraint \"users_username_key\""}
 {"time":"2024-11-17T14:43:30.310285155+05:00","level":"ERROR","msg":"Error in creating user","error":"failed to create user: pq: duplicate key value violates unique constraint \"users_username_key\""}
+{"time":"2024-11-17T14:58:47.822208084+05:00","level":"INFO","msg":"Add user started","username":"string"}
+{"time":"2024-11-17T14:58:49.323279744+05:00","level":"INFO","msg":"Add user ended","username":"string"}
+{"time":"2024-11-17T14:58:54.792318452+05:00","level":"INFO","msg":"Log in started","username":"string"}
+{"time":"2024-11-17T14:58:56.306386575+05:00","level":"INFO","msg":"Log in ended","username":"string"}

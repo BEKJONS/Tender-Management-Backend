@@ -143,9 +143,6 @@ paths:
       - User
   /auth/user/register:
     post:
-      consumes:
-      - application/json
-      description: Register a new user account
       parameters:
       - description: Create user
         in: body
@@ -153,8 +150,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/entity.RegisterReq'
-      produces:
-      - application/json
       responses:
         "200":
           description: OK
@@ -168,9 +163,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
-      summary: Create User
-      tags:
-      - User
   /tenders:
     get:
       consumes:
@@ -194,6 +186,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: List All Tenders
       tags:
       - Tender
@@ -224,6 +218,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Create Tender
       tags:
       - Tender
@@ -249,6 +245,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Delete Tender
       tags:
       - Tender
@@ -283,6 +281,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Update Tender Status
       tags:
       - Tender
@@ -317,6 +317,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Award Tender
       tags:
       - Tender
@@ -369,6 +371,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get Bids for Tender
       tags:
       - Bids
@@ -403,6 +407,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Submit a bid on a tender
       tags:
       - Bids
@@ -461,6 +467,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get User Tenders
       tags:
       - User

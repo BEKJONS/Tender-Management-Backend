@@ -63,17 +63,6 @@ const docTemplate = `{
         },
         "/auth/user/register": {
             "post": {
-                "description": "Register a new user account",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Create User",
                 "parameters": [
                     {
                         "description": "Create user",
@@ -109,6 +98,11 @@ const docTemplate = `{
         },
         "/tenders": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "List all tenders for a specific client",
                 "consumes": [
                     "application/json"
@@ -147,6 +141,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a new tender for a client with details like title, description, deadline, and budget.",
                 "consumes": [
                     "application/json"
@@ -193,6 +192,11 @@ const docTemplate = `{
         },
         "/tenders/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete a tender by its ID",
                 "consumes": [
                     "application/json"
@@ -231,6 +235,11 @@ const docTemplate = `{
         },
         "/tenders/{id}/award/{bid_id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Award a bid to a specific tender by tender ID and bid ID.",
                 "consumes": [
                     "application/json"
@@ -282,6 +291,11 @@ const docTemplate = `{
         },
         "/tenders/{id}/bids": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of bids for a tender with optional filters for price, delivery time, and comments or status.",
                 "consumes": [
                     "application/json"
@@ -357,6 +371,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Contractors can submit bids on open tenders",
                 "consumes": [
                     "application/json"
@@ -410,6 +429,11 @@ const docTemplate = `{
         },
         "/tenders/{id}/{status}": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update the status of a tender (open, closed, awarded)",
                 "consumes": [
                     "application/json"
@@ -505,6 +529,11 @@ const docTemplate = `{
         },
         "/users/{id}/tenders": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all tenders associated with a specific user.",
                 "consumes": [
                     "application/json"
