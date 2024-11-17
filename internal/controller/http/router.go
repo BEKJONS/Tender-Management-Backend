@@ -1,6 +1,7 @@
 package http
 
 import (
+	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -17,7 +18,7 @@ import (
 // @in header
 // @name Authorization
 // @description Enter your bearer token here
-func NewRouter(engine *gin.Engine, log *slog.Logger, ctr *controller.Controller) {
+func NewRouter(engine *gin.Engine, log *slog.Logger, casbin *casbin.Enforcer, ctr *controller.Controller) {
 
 	engine.Use(CORSMiddleware())
 
@@ -29,7 +30,7 @@ func NewRouter(engine *gin.Engine, log *slog.Logger, ctr *controller.Controller)
 	usr := engine.Group("/users")
 
 	newUserRoutes(user, ctr.Auth, log)
-	newTenderRoutes(tend, ctr.Tend, log)
-	newBidRoutes(bid, ctr.Bid, log)
-	newUserController(usr, ctr.Tend, ctr.Bid, log)
+	newTenderRoutes(tend, ctr.Tend, casbin, log)
+	newBidRoutes(bid, ctr.Bid, casbin, log)
+	newUserController(usr, ctr.Tend, casbin, ctr.Bid, log)
 }

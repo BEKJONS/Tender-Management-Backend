@@ -29,6 +29,12 @@ type TenderReq struct {
 	Deadline    time.Time `db:"deadline" json:"deadline"`
 	Budget      float64   `db:"budget" json:"budget"`
 }
+type TenderReq1 struct {
+	Title       string    `db:"title" json:"title"`
+	Description string    `db:"description" json:"description"`
+	Deadline    time.Time `db:"deadline" json:"deadline"`
+	Budget      float64   `db:"budget" json:"budget"`
+}
 
 type TenderRepoReq struct {
 	ClientID    string    `db:"client_id" json:"client_id"`
@@ -79,7 +85,10 @@ type Notification struct {
 type Error struct {
 	Error string `db:"error" json:"error"`
 }
-
+type Error1 struct {
+	Status  int    `db:"status" json:"status"`
+	Message string `db:"message" json:"message"`
+}
 type RegisterReq struct {
 	Username string `db:"username" json:"username"`
 	Password string `db:"password" json:"password"`
@@ -98,10 +107,9 @@ type LogInReq struct {
 }
 
 type LogInRes struct {
-	AccessToken  string `db:"access_token" json:"access_token"`
-	RefreshToken string `db:"refresh_token" json:"refresh_token"`
-	UserId       string `db:"user_id" json:"user_id"`
-	ExpireAt     int    `db:"expire_at" json:"expire_at"`
+	Token    string `db:"token" json:"token"`
+	UserId   string `db:"user_id" json:"user_id"`
+	ExpireAt int    `db:"expire_at" json:"expire_at"`
 }
 
 type Message struct {

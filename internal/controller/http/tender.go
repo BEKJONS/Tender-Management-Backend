@@ -1,6 +1,7 @@
 package http
 
 import (
+	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
@@ -14,13 +15,13 @@ type tenderRoutes struct {
 	log *slog.Logger
 }
 
-func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, log *slog.Logger) {
+func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, casbin *casbin.Enforcer, log *slog.Logger) {
 
 	tender := tenderRoutes{ts, log}
-
+	router.Use(PermissionMiddleware(casbin))
 	router.POST("/", tender.createTender)
 	router.GET("/", tender.listTenders)
-	router.PUT("/:id", tender.updateTenderStatus)
+	router.PUT("/:id/:status", tender.updateTenderStatus)
 	router.DELETE("/:id", tender.deleteTender)
 
 	router.POST("/:id/award/:bid_id", tender.awardTender)
@@ -34,13 +35,13 @@ func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, log *sl
 // @Tags Tender
 // @Accept json
 // @Produce json
-// @Param CreateTender body entity.TenderReq true "Create tender"
+// @Param CreateTender body entity.TenderReq1 true "Create tender"
 // @Success 201 {object} entity.Tender
 // @Failure 400 {object} entity.Error
 // @Failure 500 {object} entity.Error
 // @Router /tenders [post]
 func (t *tenderRoutes) createTender(c *gin.Context) {
-	var req entity.TenderReq
+	var req entity.TenderReq1
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		t.log.Error("Error in getting from body", "error", err)
@@ -49,7 +50,9 @@ func (t *tenderRoutes) createTender(c *gin.Context) {
 	}
 
 	// Create tender via service
-	tender, err := t.ts.CreateTender(req)
+	tender, err := t.ts.CreateTender(entity.TenderReq{ClientID: c.MustGet("user_id").(string),
+		Title: req.Title, Description: req.Description,
+		Deadline: req.Deadline, Budget: req.Budget})
 	if err != nil {
 		t.log.Error("Error in creating tender", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -70,7 +73,7 @@ func (t *tenderRoutes) createTender(c *gin.Context) {
 // @Failure 500 {object} entity.Error
 // @Router /tenders [get]
 func (t *tenderRoutes) listTenders(c *gin.Context) {
-	clientID := c.DefaultQuery("client_id", "")
+	clientID := c.DefaultQuery("client_id", c.MustGet("user_id").(string))
 
 	tenders, err := t.ts.ListTenders(clientID)
 	if err != nil {
@@ -97,11 +100,8 @@ func (t *tenderRoutes) listTenders(c *gin.Context) {
 func (t *tenderRoutes) updateTenderStatus(c *gin.Context) {
 	req := entity.UpdateTender{}
 
-	if err := c.ShouldBindJSON(&req); err != nil {
-		t.log.Error("Error in getting from body", "error", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	req.Id = c.Param("id")
+	req.Status = c.Param("status")
 
 	// Update status via service
 	msg, err := t.ts.UpdateTenderStatus(&req)
@@ -146,13 +146,11 @@ func (t *tenderRoutes) deleteTender(c *gin.Context) {
 // @Produce json
 // @Param id path string true "Tender ID"
 // @Param bid_id path string true "Bid ID"
-// @Param Awarded body entity.Awarded true "Award Details"
 // @Success 200 {object} entity.AwardedRes
 // @Failure 400 {object} entity.Error
 // @Failure 500 {object} entity.Error
-// @Router /{id}/award/{bid_id} [post]
+// @Router /tenders/{id}/award/{bid_id} [post]
 func (t *tenderRoutes) awardTender(c *gin.Context) {
-	// Получаем параметры пути
 	tenderID := c.Param("id")
 	bidID := c.Param("bid_id")
 
@@ -162,19 +160,11 @@ func (t *tenderRoutes) awardTender(c *gin.Context) {
 		return
 	}
 
-	// Получаем тело запроса
-	var req entity.Awarded
-	if err := c.ShouldBindJSON(&req); err != nil {
-		t.log.Error("Error in parsing request body", "error", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	req := entity.Awarded{
+		TenderID: tenderID,
+		BideId:   bidID,
 	}
 
-	// Устанавливаем ID из параметров пути в структуру запроса
-	req.TenderID = tenderID
-	req.BideId = bidID
-
-	// Вызываем сервисный метод
 	res, err := t.ts.AwardTender(&req)
 	if err != nil {
 		t.log.Error("Error in awarding tender", "error", err)
@@ -182,6 +172,5 @@ func (t *tenderRoutes) awardTender(c *gin.Context) {
 		return
 	}
 
-	// Успешный ответ
 	c.JSON(http.StatusOK, res)
 }

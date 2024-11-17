@@ -89,7 +89,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entity.RegisterRes"
+                            "$ref": "#/definitions/entity.LogInRes"
                         }
                     },
                     "400": {
@@ -165,7 +165,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.TenderReq"
+                            "$ref": "#/definitions/entity.TenderReq1"
                         }
                     }
                 ],
@@ -229,6 +229,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/tenders/{id}/award/{bid_id}": {
+            "post": {
+                "description": "Award a bid to a specific tender by tender ID and bid ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tender"
+                ],
+                "summary": "Award Tender",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tender ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bid ID",
+                        "name": "bid_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.AwardedRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/tenders/{id}/bids": {
             "get": {
                 "description": "Get a list of bids for a tender with optional filters for price, delivery time, and comments or status.",
@@ -243,6 +294,13 @@ const docTemplate = `{
                 ],
                 "summary": "Get Bids for Tender",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tender ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "type": "number",
                         "description": "Filter by price",
@@ -282,6 +340,57 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/entity.Bid"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Contractors can submit bids on open tenders",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bids"
+                ],
+                "summary": "Submit a bid on a tender",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tender ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Bid details",
+                        "name": "bid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Bid1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Bid"
                         }
                     },
                     "400": {
@@ -350,59 +459,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/tenders/{tender_id}/bids": {
-            "post": {
-                "description": "Contractors can submit bids on open tenders",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Bids"
-                ],
-                "summary": "Submit a bid on a tender",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Tender ID",
-                        "name": "tender_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Bid details",
-                        "name": "bid",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.Bid1"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Bid"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    }
-                }
-            }
-        },
         "/users/{id}/bids": {
             "get": {
                 "description": "Retrieve all bids placed by a specific user.",
@@ -416,15 +472,6 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "Get User Bids",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -469,15 +516,6 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "Get User Tenders",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -508,80 +546,9 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/{id}/award/{bid_id}": {
-            "post": {
-                "description": "Award a bid to a specific tender by tender ID and bid ID.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Tender"
-                ],
-                "summary": "Award Tender",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Tender ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bid ID",
-                        "name": "bid_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Award Details",
-                        "name": "Awarded",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.Awarded"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.AwardedRes"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
-        "entity.Awarded": {
-            "type": "object",
-            "properties": {
-                "bide_id": {
-                    "type": "string"
-                },
-                "tender_id": {
-                    "type": "string"
-                }
-            }
-        },
         "entity.AwardedRes": {
             "type": "object",
             "properties": {
@@ -665,13 +632,10 @@ const docTemplate = `{
         "entity.LogInRes": {
             "type": "object",
             "properties": {
-                "access_token": {
-                    "type": "string"
-                },
                 "expire_at": {
                     "type": "integer"
                 },
-                "refresh_token": {
+                "token": {
                     "type": "string"
                 },
                 "user_id": {
@@ -697,17 +661,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "entity.RegisterRes": {
-            "type": "object",
-            "properties": {
-                "user_id": {
                     "type": "string"
                 },
                 "username": {
@@ -741,14 +694,11 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.TenderReq": {
+        "entity.TenderReq1": {
             "type": "object",
             "properties": {
                 "budget": {
                     "type": "number"
-                },
-                "client_id": {
-                    "type": "string"
                 },
                 "deadline": {
                     "type": "string"

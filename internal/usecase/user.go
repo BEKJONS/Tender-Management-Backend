@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"fmt"
 	"log/slog"
 	"tender_management/internal/entity"
 	"tender_management/internal/usecase/help"
@@ -19,7 +20,7 @@ func NewUserUseCase(repo UsersRepo, log *slog.Logger) *UserUseCase {
 	}
 }
 
-func (u *UserUseCase) AddUser(in entity.RegisterReq) (*entity.RegisterRes, error) {
+func (u *UserUseCase) AddUser(in entity.RegisterReq) (*entity.LogInRes, error) {
 	u.log.Info("Add user started", "username", in.Username)
 	hash, err := help.HashPassword(in.Password)
 	if err != nil {
@@ -28,7 +29,6 @@ func (u *UserUseCase) AddUser(in entity.RegisterReq) (*entity.RegisterRes, error
 	}
 
 	in.Password = hash
-
 	if in.Role == "" {
 		in.Role = "contractor"
 	}
@@ -38,10 +38,20 @@ func (u *UserUseCase) AddUser(in entity.RegisterReq) (*entity.RegisterRes, error
 		u.log.Error("Error in adding user", "error", err)
 		return nil, err
 	}
+	accessToken, err := token.GenerateAccessToken(res)
+	if err != nil {
+		u.log.Error("Error in generating access token", "error", err)
+		return nil, err
+	}
+
+	expireAt := token.GetExpires()
 
 	u.log.Info("Add user ended", "username", in.Username)
 
-	return &entity.RegisterRes{UserId: res.ID, Username: res.Username}, nil
+	return &entity.LogInRes{Token: accessToken, UserId: res.ID, ExpireAt: expireAt}, nil
+}
+func (u *UserUseCase) IsEmailExists(email string) (bool, error) {
+	return u.repo.IsEmailExists(email)
 }
 
 func (u *UserUseCase) LogIn(in entity.LogInReq) (*entity.LogInRes, error) {
@@ -53,8 +63,8 @@ func (u *UserUseCase) LogIn(in entity.LogInReq) (*entity.LogInRes, error) {
 	}
 
 	if !help.CheckPasswordHash(in.Password, res.Password) {
-		u.log.Error("Error in logging in", "error", "password does not match")
-		return nil, err
+		u.log.Error("Error in logging in", "error", "Invalid username or password")
+		return nil, fmt.Errorf("Invalid username or password")
 	}
 
 	accessToken, err := token.GenerateAccessToken(res)
@@ -63,20 +73,13 @@ func (u *UserUseCase) LogIn(in entity.LogInReq) (*entity.LogInRes, error) {
 		return nil, err
 	}
 
-	refreshToken, err := token.GenerateRefreshToken(res)
-	if err != nil {
-		u.log.Error("Error in generating refresh token", "error", err)
-		return nil, err
-	}
-
 	expireAt := token.GetExpires()
 
 	u.log.Info("Log in ended", "username", in.Username)
 
 	return &entity.LogInRes{
-		AccessToken:  accessToken,
-		RefreshToken: refreshToken,
-		UserId:       res.ID,
-		ExpireAt:     expireAt,
+		Token:    accessToken,
+		UserId:   res.ID,
+		ExpireAt: expireAt,
 	}, nil
 }

@@ -25,6 +25,13 @@ func (u *UserRepo) CreateUser(user entity.User) (entity.User, error) {
 	return user, nil
 }
 
+func (u *UserRepo) IsEmailExists(email string) (bool, error) {
+	var exists bool
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`
+	err := u.db.QueryRow(query, email).Scan(&exists)
+	return exists, err
+}
+
 func (u *UserRepo) GetUserByUsername(username string) (entity.User, error) {
 	query := `SELECT id, username, password, role, email FROM users WHERE username = $1`
 	var user entity.User

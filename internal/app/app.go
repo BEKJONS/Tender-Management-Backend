@@ -1,11 +1,14 @@
 package app
 
 import (
+	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"log"
+	"os"
 	"tender_management/config"
 	"tender_management/internal/controller"
 	"tender_management/internal/controller/http"
+	"tender_management/internal/usecase/redis"
 	"tender_management/internal/usecase/token"
 	"tender_management/pkg/logger"
 	"tender_management/pkg/postgres"
@@ -25,10 +28,23 @@ func Run(cfg *config.Config) {
 		log.Fatal(err)
 	}
 
-	controller1 := controller.NewController(db, logger1)
+	rdb := redis.NewRedisClient()
+
+	controller1 := controller.NewController(db, logger1, rdb)
+
+	path, err := os.Getwd()
+	if err != nil {
+		logger1.Error("Failed to get current working directory")
+		return
+	}
+
+	casbinEnforcer, err := casbin.NewEnforcer(path+"/pkg/config/model.conf", path+"/pkg/config/policy.csv")
+	if err != nil {
+		panic(err)
+	}
 
 	engine := gin.Default()
-	http.NewRouter(engine, logger1, controller1)
+	http.NewRouter(engine, logger1, casbinEnforcer, controller1)
 
 	log.Fatal(engine.Run(cfg.RUN_PORT))
 }

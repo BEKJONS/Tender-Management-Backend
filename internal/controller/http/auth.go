@@ -1,9 +1,9 @@
 package http
 
 import (
-	"regexp"
 	_ "tender_management/docs"
 
+	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
@@ -47,10 +47,25 @@ func (a *authRoutes) login(c *gin.Context) {
 		return
 	}
 
+	if req.Username == "" || req.Password == "" {
+		a.log.Error("Unauthorized login attempt", "error", "Username and password are required")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Username and password are required"})
+		return
+	}
+
 	res, err := a.us.LogIn(req)
 	if err != nil {
-		a.log.Error("Error in login", "error", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		switch err.Error() {
+		case "Invalid username or password":
+			a.log.Error("Unauthorized login attempt", "error", err)
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+		case "failed to get user: sql: no rows in result set":
+			a.log.Error("User not found", "error", err)
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		default:
+			a.log.Error("Error in login", "error", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
 		return
 	}
 
@@ -64,7 +79,7 @@ func (a *authRoutes) login(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param CreateUser body entity.RegisterReq true "Create user"
-// @Success 200 {object} entity.RegisterRes
+// @Success 200 {object} entity.LogInRes
 // @Failure 400 {object} entity.Error
 // @Failure 500 {object} entity.Error
 // @Router /auth/user/register [post]
@@ -77,10 +92,31 @@ func (a *authRoutes) createUser(c *gin.Context) {
 		return
 	}
 
-	check := isValidEmail(req.Email)
-	if !check {
-		a.log.Error("Invalid email format")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email format"})
+	err := checkmail.ValidateFormat(req.Email)
+	if err != nil {
+		a.log.Error("Invalid email provided", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid email format"})
+		return
+	}
+	if req.Username == "" || req.Email == "" {
+		a.log.Error("message", "username or email cannot be empty")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "username or email cannot be empty"})
+		return
+	}
+	if req.Role != "contractor" && req.Role != "client" {
+		a.log.Error("Invalid role provided", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid role"})
+		return
+	}
+	exists, err := a.us.IsEmailExists(req.Email)
+	if err != nil {
+		a.log.Error("Error in checking if email exists", "error", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if exists {
+		a.log.Error("Email already exists", "email", req.Email)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Email already exists"})
 		return
 	}
 
@@ -91,139 +127,5 @@ func (a *authRoutes) createUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, res)
+	c.JSON(http.StatusCreated, res)
 }
-
-func isValidEmail(email string) bool {
-	// Регулярное выражение для проверки email
-	regex := `^[a-zA-Z0-9._%+-]+@gmail\.com$`
-	re := regexp.MustCompile(regex)
-	return re.MatchString(email)
-}
-
-//
-//// UpdateUser godoc
-//// @Summary Update User
-//// @Description Update user details
-//// @Tags User
-//// @Accept json
-//// @Produce json
-//// @Param id path string true "User ID"
-//// @Param UpdateUser body entity.UserUpdate true "Update user"
-//// @Success 200 {object} entity.UserRequest
-//// @Failure 400 {object} entity.Error
-//// @Failure 500 {object} entity.Error
-//// @Router /auth/update/{id} [put]
-//func (a *authRoutes) updateUser(c *gin.Context) {
-//	var req entity.UserRequest
-//	var user entity.UserUpdate
-//
-//	if err := c.ShouldBindJSON(&user); err != nil {
-//		a.log.Error("Error in getting from body", "error", err)
-//		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-//		return
-//	}
-//
-//	req.UserID = c.Param("id")
-//	req.FirstName = user.FirstName
-//	req.LastName = user.LastName
-//	req.PhoneNumber = user.PhoneNumber
-//	req.Email = user.Email
-//	req.Role = user.Role
-//
-//	res, err := a.us.UpdateUser(req)
-//	if err != nil {
-//		a.log.Error("Error in updating user", "error", err)
-//		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-//		return
-//	}
-//
-//	c.JSON(http.StatusOK, res)
-//}
-//
-//// DeleteUser godoc
-//// @Summary Delete User
-//// @Description Delete a user account
-//// @Tags User
-//// @Accept json
-//// @Produce json
-//// @Param id path string true "User ID"
-//// @Success 200 {object} entity.Message
-//// @Failure 400 {object} entity.Error
-//// @Failure 500 {object} entity.Error
-//// @Router /auth/delete/{id} [delete]
-//func (a *authRoutes) deleteUser(c *gin.Context) {
-//	var req entity.UserID
-//
-//	id := c.Param("id")
-//	req.ID = id
-//
-//	res, err := a.us.DeleteUser(req)
-//
-//	if err != nil {
-//		a.log.Error("Error in deleting user", "error", err)
-//		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-//		return
-//	}
-//
-//	c.JSON(http.StatusOK, res)
-//}
-//
-//// GetUser godoc
-//// @Summary Get User
-//// @Description Retrieve user details by ID
-//// @Tags User
-//// @Accept json
-//// @Produce json
-//// @Param id path string true "User ID"
-//// @Success 200 {object} entity.UserRequest
-//// @Failure 400 {object} entity.Error
-//// @Failure 500 {object} entity.Error
-//// @Router /auth/get/{id} [get]
-//func (a *authRoutes) getUser(c *gin.Context) {
-//	var req entity.UserID
-//
-//	id := c.Param("id")
-//	req.ID = id
-//
-//	res, err := a.us.GetUser(req)
-//
-//	if err != nil {
-//		a.log.Error("Error in getting user", "error", err)
-//		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-//		return
-//	}
-//
-//	c.JSON(http.StatusOK, res)
-//}
-//
-//// ListUser godoc
-//// @Summary List Users
-//// @Description Retrieve a list of users with optional filters
-//// @Tags User
-//// @Accept json
-//// @Produce json
-//// @Param FilterUser query entity.FilterUser false "User filter parameters"
-//// @Success 200 {array} entity.UserList
-//// @Failure 400 {object} entity.Error
-//// @Failure 500 {object} entity.Error
-//// @Router /auth/list [get]
-//func (a *authRoutes) listUser(c *gin.Context) {
-//	var req entity.FilterUser
-//
-//	if err := c.ShouldBindQuery(&req); err != nil {
-//		a.log.Error("Error in getting from body", "error", err)
-//		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-//		return
-//	}
-//
-//	res, err := a.us.GetUserList(req)
-//
-//	if err != nil {
-//		a.log.Error("Error in getting user", "error", err)
-//		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-//		return
-//	}
-//
-//	c.JSON(http.StatusOK, res)
-//}

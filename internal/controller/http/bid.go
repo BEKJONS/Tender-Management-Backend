@@ -1,6 +1,12 @@
 package http
 
 import (
+<<<<<<< HEAD
+=======
+	"fmt"
+	"github.com/casbin/casbin/v2"
+	"github.com/gin-gonic/gin"
+>>>>>>> 29dd3dcb82467032cc2a8820dc54e6aae2a4055a
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -21,9 +27,9 @@ type bidRoutes struct {
 	log *slog.Logger
 }
 
-func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, log *slog.Logger) {
+func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, casbin *casbin.Enforcer, log *slog.Logger) {
 	bids := bidRoutes{us, log}
-
+	router.Use(PermissionMiddleware(casbin))
 	router.POST("/tenders/:id/bids", bids.submitBid)
 	router.GET("/tenders/:id/bids", bids.getSubmittedBids)
 }
@@ -34,13 +40,14 @@ func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, log *slog.Log
 // @Tags Bids
 // @Accept json
 // @Produce json
-// @Param tender_id path string true "Tender ID"
+// @Param id path string true "Tender ID"
 // @Param bid body entity.Bid1 true "Bid details"
 // @Success 201 {object} entity.Bid
 // @Failure 400 {object} entity.Error
 // @Failure 500 {object} entity.Error
-// @Router /tenders/{tender_id}/bids [post]
+// @Router /tenders/{id}/bids [post]
 func (b *bidRoutes) submitBid(c *gin.Context) {
+<<<<<<< HEAD
 	var bid entity.Bid
 	claims, err := extractClaims(c)
 	if err != nil {
@@ -59,23 +66,40 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "cannot get user id"})
 		return
 	}
+=======
+	var bid entity.Bid1
+>>>>>>> 29dd3dcb82467032cc2a8820dc54e6aae2a4055a
 
 	tenderID := c.Param("id")
-
-	if err := c.ShouldBindJSON(&bid); err != nil {
-		b.log.Error("Error in getting from body", "error", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if tenderID == "" {
+		b.log.Error("Tender ID is missing in the request")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Tender ID is missing"})
 		return
 	}
 
-	// Set the tender ID from the URL parameter
-	bid.TenderID = tenderID
+	fmt.Println(tenderID)
 
-	// Submit the bid
-	newBid, err := b.us.SubmitBid(bid)
+	if err := c.ShouldBindJSON(&bid); err != nil {
+		b.log.Error("Error parsing bid payload", "error", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid bid data", "details": err.Error()})
+		return
+	}
+
+	// Log the tender ID and bid details for better traceability
+	b.log.Info("Submitting bid", "tender_id", tenderID, "bid", bid)
+
+	// Submit the bid using the provided tender ID
+	newBid, err := b.us.SubmitBid(entity.Bid{
+		TenderID:     tenderID,
+		ContractorID: c.MustGet("user_id").(string),
+		Price:        bid.Price,
+		DeliveryTime: bid.DeliveryTime,
+		Comments:     bid.Comments,
+		Status:       bid.Status,
+	})
 	if err != nil {
 		b.log.Error("Error in submitting bid", "error", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to submit bid", "details": err.Error()})
 		return
 	}
 
@@ -98,6 +122,7 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 // @Tags Bids
 // @Accept json
 // @Produce json
+// @Param id path string true "Tender ID"
 // @Param price query float64 false "Filter by price"
 // @Param delivery_time query int false "Filter by delivery time"
 // @Param comments query string false "Filter by comments"

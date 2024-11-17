@@ -5,6 +5,7 @@ import "tender_management/internal/entity"
 type UsersRepo interface {
 	CreateUser(user entity.User) (entity.User, error)
 	GetUserByUsername(username string) (entity.User, error)
+	IsEmailExists(email string) (bool, error)
 }
 type TenderRepo interface {
 	CreateTender(in entity.TenderRepoReq) (entity.Tender, error)
