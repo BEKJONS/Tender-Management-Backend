@@ -17,7 +17,7 @@ mig-force:
 mig-create:
 	migrate create -ext sql -dir migrations -seq tender_management
 
-docker-up:
+run:
 	docker compose up -d
 
 swag-gen:
