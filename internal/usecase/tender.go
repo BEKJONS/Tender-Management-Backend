@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"errors"
 	"log/slog"
 	"tender_management/internal/entity"
@@ -9,11 +10,12 @@ import (
 
 type TenderService struct {
 	repo TenderRepo
+	bid  BidRepo
 	log  *slog.Logger
 }
 
 // NewTenderService creates a new instance of TenderService.
-func NewTenderService(repo TenderRepo, log *slog.Logger) *TenderService {
+func NewTenderService(repo TenderRepo, bid BidRepo, log *slog.Logger) *TenderService {
 	return &TenderService{repo: repo, log: log}
 }
 
@@ -52,6 +54,20 @@ func (s *TenderService) CreateTender(in entity.TenderReq) (entity.Tender, error)
 		s.log.Error("error creating tender", "error", err)
 		return entity.Tender{}, err
 	}
+
+	ctx, _ := context.WithDeadline(context.Background(), req.Deadline)
+
+	go func() {
+		select {
+		case <-ctx.Done():
+			err := s.repo.CloseTenders(tender.ID)
+			if err != nil {
+				s.log.Error("error closing tender", "error", err)
+				return
+			}
+		}
+	}()
+
 	return tender, nil
 }
 
@@ -118,6 +134,23 @@ func (s *TenderService) GetUserTenders(clientID string) ([]entity.Tender, error)
 	res, err := s.repo.GetUserTenders(clientID)
 	if err != nil {
 		s.log.Error("error getting user tenders", "error", err)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (s *TenderService) AwardTender(in *entity.Awarded) (*entity.AwardedRes, error) {
+
+	res, err := s.repo.AwardedBide(in)
+	if err != nil {
+		s.log.Error("error awarded tender", "error", err)
+		return nil, err
+	}
+
+	res, err = s.bid.AwardedBide(in)
+	if err != nil {
+		s.log.Error("error awarded tender", "error", err)
 		return nil, err
 	}
 

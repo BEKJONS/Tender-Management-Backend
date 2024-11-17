@@ -508,9 +508,94 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/{id}/award/{bid_id}": {
+            "post": {
+                "description": "Award a bid to a specific tender by tender ID and bid ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tender"
+                ],
+                "summary": "Award Tender",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tender ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bid ID",
+                        "name": "bid_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Award Details",
+                        "name": "Awarded",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Awarded"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.AwardedRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "entity.Awarded": {
+            "type": "object",
+            "properties": {
+                "bide_id": {
+                    "type": "string"
+                },
+                "tender_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.AwardedRes": {
+            "type": "object",
+            "properties": {
+                "bide_id": {
+                    "type": "string"
+                },
+                "contractor_id": {
+                    "type": "string"
+                },
+                "tender_id": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.Bid": {
             "type": "object",
             "properties": {

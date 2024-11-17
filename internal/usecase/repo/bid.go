@@ -116,3 +116,19 @@ func (r *BidRepo) GetUserBids(userID string) ([]entity.Bid, error) {
 
 	return bids, nil
 }
+
+func (r *BidRepo) AwardedBide(in *entity.Awarded) (*entity.AwardedRes, error) {
+
+	res := entity.AwardedRes{}
+
+	err := r.db.QueryRow("UPDATE bids SET status = 'awarded' WHERE id = $1 RETURNING contractor_id", in.BideId).
+		Scan(&res.ContractorID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update awarded bid: %w", err)
+	}
+
+	res.BideId = in.BideId
+	res.TenderID = in.TenderID
+
+	return &res, nil
+}

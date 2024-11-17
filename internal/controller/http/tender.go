@@ -22,6 +22,8 @@ func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, log *sl
 	router.GET("/", tender.listTenders)
 	router.PUT("/:id", tender.updateTenderStatus)
 	router.DELETE("/:id", tender.deleteTender)
+
+	router.POST("/:id/award/:bid_id", tender.awardTender)
 }
 
 // ------------ Handler methods --------------------------------------------------------
@@ -134,4 +136,52 @@ func (t *tenderRoutes) deleteTender(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, msg)
+}
+
+// awardTender godoc
+// @Summary Award Tender
+// @Description Award a bid to a specific tender by tender ID and bid ID.
+// @Tags Tender
+// @Accept json
+// @Produce json
+// @Param id path string true "Tender ID"
+// @Param bid_id path string true "Bid ID"
+// @Param Awarded body entity.Awarded true "Award Details"
+// @Success 200 {object} entity.AwardedRes
+// @Failure 400 {object} entity.Error
+// @Failure 500 {object} entity.Error
+// @Router /{id}/award/{bid_id} [post]
+func (t *tenderRoutes) awardTender(c *gin.Context) {
+	// Получаем параметры пути
+	tenderID := c.Param("id")
+	bidID := c.Param("bid_id")
+
+	if tenderID == "" || bidID == "" {
+		t.log.Error("Missing path parameters", "tenderID", tenderID, "bidID", bidID)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Tender ID and Bid ID are required"})
+		return
+	}
+
+	// Получаем тело запроса
+	var req entity.Awarded
+	if err := c.ShouldBindJSON(&req); err != nil {
+		t.log.Error("Error in parsing request body", "error", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Устанавливаем ID из параметров пути в структуру запроса
+	req.TenderID = tenderID
+	req.BideId = bidID
+
+	// Вызываем сервисный метод
+	res, err := t.ts.AwardTender(&req)
+	if err != nil {
+		t.log.Error("Error in awarding tender", "error", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Успешный ответ
+	c.JSON(http.StatusOK, res)
 }

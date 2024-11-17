@@ -21,7 +21,7 @@ func NewController(db *sqlx.DB, log *slog.Logger) *Controller {
 
 	ctr := &Controller{
 		Auth: usecase.NewUserUseCase(authRepo, log),
-		Tend: usecase.NewTenderService(tendRepo, log),
+		Tend: usecase.NewTenderService(tendRepo, bidRepo, log),
 		Bid:  usecase.NewBidUseCase(bidRepo, log),
 	}
 

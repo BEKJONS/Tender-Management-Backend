@@ -129,3 +129,14 @@ type UpdateTender struct {
 	Budget      float64   `db:"budget" json:"budget"`
 	Status      string    `db:"status" json:"status"`
 }
+
+type Awarded struct {
+	TenderID string `db:"tender_id" json:"tender_id"`
+	BideId   string `db:"bide_id" json:"bide_id"`
+}
+
+type AwardedRes struct {
+	TenderID     string `db:"tender_id" json:"tender_id"`
+	BideId       string `db:"bide_id" json:"bide_id"`
+	ContractorID string `db:"contractor_id" json:"contractor_id"`
+}

@@ -188,3 +188,24 @@ func (r *TenderRepo) GetUserTenders(userID string) ([]entity.Tender, error) {
 
 	return tenders, nil
 }
+
+func (r *TenderRepo) CloseTenders(tenderId string) error {
+
+	_, err := r.db.Exec("UPDATE tenders SET status = 'closed' WHERE id = $1", tenderId)
+	if err != nil {
+		return fmt.Errorf("failed to close tender: %w", err)
+	}
+
+	return nil
+}
+
+func (r *TenderRepo) AwardedBide(in *entity.Awarded) (*entity.AwardedRes, error) {
+	res := &entity.AwardedRes{}
+
+	_, err := r.db.Exec("UPDATE tenders SET status = 'awarded' WHERE id = $1", in.TenderID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update tender: %w", err)
+	}
+
+	return res, nil
+}

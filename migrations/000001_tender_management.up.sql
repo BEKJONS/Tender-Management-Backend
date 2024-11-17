@@ -28,7 +28,7 @@ CREATE TABLE bids
     price         NUMERIC(15, 2) CHECK (price > 0),
     delivery_time INT CHECK (delivery_time > 0),
     comments      TEXT,
-    status        VARCHAR(20)      DEFAULT 'pending'
+    status        VARCHAR(20)      DEFAULT 'pending'  CHECK (status IN ('pending', 'lost', 'awarded'))
 );
 
 CREATE TABLE notifications
