@@ -15,7 +15,6 @@ import (
 	"tender_management/internal/web"
 	"tender_management/pkg/postgres"
 
-	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -62,7 +61,7 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "cannot get user id"})
 		return
 	}
-	var bid entity.Bid1
+	var bid1 entity.Bid1
 
 	tenderID := c.Param("id")
 	if tenderID == "" {
@@ -73,7 +72,7 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 
 	fmt.Println(tenderID)
 
-	if err := c.ShouldBindJSON(&bid); err != nil {
+	if err := c.ShouldBindJSON(&bid1); err != nil {
 		b.log.Error("Error parsing bid payload", "error", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid bid data", "details": err.Error()})
 		return
