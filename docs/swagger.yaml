@@ -1,11 +1,4 @@
 definitions:
-  entity.Awarded:
-    properties:
-      bide_id:
-        type: string
-      tender_id:
-        type: string
-    type: object
   entity.AwardedRes:
     properties:
       bide_id:
@@ -61,11 +54,9 @@ definitions:
     type: object
   entity.LogInRes:
     properties:
-      access_token:
-        type: string
       expire_at:
         type: integer
-      refresh_token:
+      token:
         type: string
       user_id:
         type: string
@@ -82,13 +73,6 @@ definitions:
       password:
         type: string
       role:
-        type: string
-      username:
-        type: string
-    type: object
-  entity.RegisterRes:
-    properties:
-      user_id:
         type: string
       username:
         type: string
@@ -126,46 +110,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /{id}/award/{bid_id}:
-    post:
-      consumes:
-      - application/json
-      description: Award a bid to a specific tender by tender ID and bid ID.
-      parameters:
-      - description: Tender ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Bid ID
-        in: path
-        name: bid_id
-        required: true
-        type: string
-      - description: Award Details
-        in: body
-        name: Awarded
-        required: true
-        schema:
-          $ref: '#/definitions/entity.Awarded'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.AwardedRes'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/entity.Error'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/entity.Error'
-      summary: Award Tender
-      tags:
-      - Tender
   /auth/login:
     post:
       consumes:
@@ -214,7 +158,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.RegisterRes'
+            $ref: '#/definitions/entity.LogInRes'
         "400":
           description: Bad Request
           schema:
@@ -339,6 +283,40 @@ paths:
           schema:
             $ref: '#/definitions/entity.Error'
       summary: Update Tender Status
+      tags:
+      - Tender
+  /tenders/{id}/award/{bid_id}:
+    post:
+      consumes:
+      - application/json
+      description: Award a bid to a specific tender by tender ID and bid ID.
+      parameters:
+      - description: Tender ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Bid ID
+        in: path
+        name: bid_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.AwardedRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.Error'
+      summary: Award Tender
       tags:
       - Tender
   /tenders/{id}/bids:

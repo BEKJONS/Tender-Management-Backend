@@ -46,3 +46,34 @@
 {"time":"2024-11-16T22:12:41.842235998+05:00","level":"ERROR","msg":"Error in fetching bids","error":"pq: invalid input syntax for type uuid: \"{id}\""}
 {"time":"2024-11-17T01:42:16.285952397+05:00","level":"ERROR","msg":"error getting user bids","error":"failed to get bids for user: pq: invalid input syntax for type uuid: \"asdf\""}
 {"time":"2024-11-17T01:42:16.286710457+05:00","level":"ERROR","msg":"Error retrieving user bids","error":"failed to get bids for user: pq: invalid input syntax for type uuid: \"asdf\""}
+{"time":"2024-11-17T12:33:22.089084857+05:00","level":"INFO","msg":"Log in started","username":"string"}
+{"time":"2024-11-17T12:33:23.600043213+05:00","level":"ERROR","msg":"Error in logging in","error":"Invalid username or password"}
+{"time":"2024-11-17T12:33:23.600104058+05:00","level":"ERROR","msg":"Unauthorized login attempt","error":"Invalid username or password"}
+{"time":"2024-11-17T12:34:00.456312433+05:00","level":"INFO","msg":"Log in started","username":"straing"}
+{"time":"2024-11-17T12:34:00.457154918+05:00","level":"ERROR","msg":"Error in logging in","error":"failed to get user: sql: no rows in result set"}
+{"time":"2024-11-17T12:34:00.457210303+05:00","level":"ERROR","msg":"Error in login","error":"failed to get user: sql: no rows in result set"}
+{"time":"2024-11-17T12:34:22.125561965+05:00","level":"INFO","msg":"Log in started","username":"string"}
+{"time":"2024-11-17T12:34:23.625871627+05:00","level":"ERROR","msg":"Error in logging in","error":"Invalid username or password"}
+{"time":"2024-11-17T12:34:23.625924948+05:00","level":"ERROR","msg":"Unauthorized login attempt","error":"Invalid username or password"}
+{"time":"2024-11-17T12:34:32.076103545+05:00","level":"INFO","msg":"Log in started","username":"string"}
+{"time":"2024-11-17T12:34:33.579929299+05:00","level":"INFO","msg":"Log in ended","username":"string"}
+{"time":"2024-11-17T12:35:23.563906856+05:00","level":"INFO","msg":"Log in started","username":"strinsg"}
+{"time":"2024-11-17T12:35:23.565563921+05:00","level":"ERROR","msg":"Error in logging in","error":"failed to get user: sql: no rows in result set"}
+{"time":"2024-11-17T12:35:23.565612113+05:00","level":"ERROR","msg":"User not found","error":"failed to get user: sql: no rows in result set"}
+{"time":"2024-11-17T13:11:47.306914768+05:00","level":"INFO","msg":"started listing tenders","clientID":""}
+{"time":"2024-11-17T13:11:47.314440456+05:00","level":"INFO","msg":"ended listing tenders","clientID":""}
+{"time":"2024-11-17T13:12:42.552234901+05:00","level":"INFO","msg":"started creating tender","title":"string"}
+{"time":"2024-11-17T13:12:42.552273584+05:00","level":"ERROR","msg":"error creating tender","error":"deadline must be in the future"}
+{"time":"2024-11-17T13:12:42.552282611+05:00","level":"INFO","msg":"ended creating tender","title":"string"}
+{"time":"2024-11-17T13:12:42.552288382+05:00","level":"ERROR","msg":"Error in creating tender","error":"deadline must be in the future"}
+{"time":"2024-11-17T13:13:47.779158951+05:00","level":"INFO","msg":"started creating tender","title":"string"}
+{"time":"2024-11-17T13:13:47.789491672+05:00","level":"INFO","msg":"ended creating tender","title":"string"}
+{"time":"2024-11-17T13:13:57.475878889+05:00","level":"INFO","msg":"started listing tenders","clientID":""}
+{"time":"2024-11-17T13:13:57.476553334+05:00","level":"INFO","msg":"ended listing tenders","clientID":""}
+{"time":"2024-11-17T13:14:20.543138027+05:00","level":"INFO","msg":"started deleting tender","id":"dbad8e0a-880d-4174-9bdc-a82817fd6852"}
+{"time":"2024-11-17T13:14:20.550419998+05:00","level":"INFO","msg":"ended deleting tender","id":"dbad8e0a-880d-4174-9bdc-a82817fd6852"}
+{"time":"2024-11-17T13:15:39.406982728+05:00","level":"ERROR","msg":"Error in getting from body","error":"EOF"}
+{"time":"2024-11-17T13:15:52.070478416+05:00","level":"ERROR","msg":"Error in getting from body","error":"EOF"}
+{"time":"2024-11-17T13:16:22.156261293+05:00","level":"ERROR","msg":"Error in getting from body","error":"EOF"}
+{"time":"2024-11-17T13:17:25.921175772+05:00","level":"INFO","msg":"started updating tender status","id":"86251688-b6f7-4c21-b343-d031c49fa29c","status":"awarded"}
+{"time":"2024-11-17T13:17:25.922823076+05:00","level":"INFO","msg":"ended updating tender status","id":"86251688-b6f7-4c21-b343-d031c49fa29c","status":"awarded"}

@@ -89,7 +89,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entity.RegisterRes"
+                            "$ref": "#/definitions/entity.LogInRes"
                         }
                     },
                     "400": {
@@ -218,6 +218,57 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entity.Message"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/tenders/{id}/award/{bid_id}": {
+            "post": {
+                "description": "Award a bid to a specific tender by tender ID and bid ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tender"
+                ],
+                "summary": "Award Tender",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tender ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bid ID",
+                        "name": "bid_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.AwardedRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
                         }
                     },
                     "500": {
@@ -508,80 +559,9 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/{id}/award/{bid_id}": {
-            "post": {
-                "description": "Award a bid to a specific tender by tender ID and bid ID.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Tender"
-                ],
-                "summary": "Award Tender",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Tender ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bid ID",
-                        "name": "bid_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Award Details",
-                        "name": "Awarded",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.Awarded"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/entity.AwardedRes"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
-        "entity.Awarded": {
-            "type": "object",
-            "properties": {
-                "bide_id": {
-                    "type": "string"
-                },
-                "tender_id": {
-                    "type": "string"
-                }
-            }
-        },
         "entity.AwardedRes": {
             "type": "object",
             "properties": {
@@ -665,13 +645,10 @@ const docTemplate = `{
         "entity.LogInRes": {
             "type": "object",
             "properties": {
-                "access_token": {
-                    "type": "string"
-                },
                 "expire_at": {
                     "type": "integer"
                 },
-                "refresh_token": {
+                "token": {
                     "type": "string"
                 },
                 "user_id": {
@@ -697,17 +674,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "entity.RegisterRes": {
-            "type": "object",
-            "properties": {
-                "user_id": {
                     "type": "string"
                 },
                 "username": {

@@ -32,7 +32,7 @@ func (s *TenderService) CreateTender(in entity.TenderReq) (entity.Tender, error)
 		return entity.Tender{}, errors.New("title is required")
 	}
 
-	if in.Deadline.After(time.Now()) {
+	if in.Deadline.Before(time.Now()) {
 		s.log.Error("error creating tender", "error", errors.New("deadline must be in the future"))
 		return entity.Tender{}, errors.New("deadline must be in the future")
 	}
