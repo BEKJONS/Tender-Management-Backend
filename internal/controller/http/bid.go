@@ -1,12 +1,19 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
 	"log/slog"
 	"net/http"
 	"strconv"
+	"tender_management/config"
+	"tender_management/internal/email"
 	"tender_management/internal/entity"
 	"tender_management/internal/usecase"
+	"tender_management/internal/usecase/repo"
+	"tender_management/internal/web"
+	"tender_management/pkg/postgres"
+
+	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
 type bidRoutes struct {
@@ -35,6 +42,23 @@ func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, log *slog.Log
 // @Router /tenders/{tender_id}/bids [post]
 func (b *bidRoutes) submitBid(c *gin.Context) {
 	var bid entity.Bid
+	claims, err := extractClaims(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err})
+		return
+	}
+
+	userID, ok := claims["id"].(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "cannot get user id"})
+		return
+	}
+
+	username, ok := claims["username"].(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "cannot get user id"})
+		return
+	}
 
 	tenderID := c.Param("id")
 
@@ -54,6 +78,15 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	// Send an email to the client
+	message, err := email.CreateBidMessage(userID, tenderID, username)
+	if err != nil {
+		b.log.Error("Error in sending email", "error", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	NotifyAll(c, message, config.NewConfig())
 
 	// Return the submitted bid
 	c.JSON(http.StatusCreated, newBid)
@@ -145,4 +178,24 @@ func parseIntQueryParam(c *gin.Context, param string) (*int, error) {
 		return nil, err
 	}
 	return &val, nil
+}
+
+func NotifyAll(c *gin.Context, message string, cfg *config.Config) {
+	db, err := postgres.Connection(cfg)
+	if err != nil {
+		return
+	}
+	emails, err := repo.GetAllEmails(db)
+	if err != nil {
+		return
+	}
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	for _, email := range emails {
+		web.SendNotification(c, message, cfg, client, email.Email)
+	}
 }

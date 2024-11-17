@@ -140,3 +140,7 @@ type AwardedRes struct {
 	BideId       string `db:"bide_id" json:"bide_id"`
 	ContractorID string `db:"contractor_id" json:"contractor_id"`
 }
+
+type Emails struct {
+	Email string `db:"email" json:"email"`
+}

@@ -1,8 +1,12 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
+	"tender_management/internal/usecase/token"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
+	"github.com/pkg/errors"
 )
 
 func CORSMiddleware() gin.HandlerFunc {
@@ -21,4 +25,14 @@ func CORSMiddleware() gin.HandlerFunc {
 			c.Next()
 		}
 	}
+}
+func extractClaims(c *gin.Context) (jwt.MapClaims, error) {
+	Token := c.GetHeader("Authorization")
+
+	claims, err := token.ExtractClaims(Token)
+	if err != nil || claims == nil {
+		return nil, errors.Wrap(err, "invalid cookie")
+	}
+
+	return claims, nil
 }
