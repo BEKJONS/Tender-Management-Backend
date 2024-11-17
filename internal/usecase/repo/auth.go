@@ -59,3 +59,13 @@ func (u *UserRepo) DeleteUser(userID string) error {
 	}
 	return nil
 }
+
+func GetAllEmails(db *sqlx.DB) ([]entity.Emails, error) {
+	query := `SELECT email FROM users`
+	var emails []entity.Emails
+	err := db.Select(&emails, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get emails: %w", err)
+	}
+	return emails, nil
+}

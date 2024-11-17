@@ -1,6 +1,14 @@
 package http
 
 import (
+<<<<<<< HEAD
+	"log"
+	"tender_management/internal/usecase/token"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
+	"github.com/pkg/errors"
+=======
 	"errors"
 	"fmt"
 	"github.com/casbin/casbin/v2"
@@ -9,6 +17,7 @@ import (
 	"net/http"
 	rate_limiting "tender_management/internal/usecase/redis/rate-limiting"
 	"tender_management/internal/usecase/token"
+>>>>>>> 29dd3dcb82467032cc2a8820dc54e6aae2a4055a
 )
 
 type casbinPermission struct {
@@ -128,4 +137,14 @@ func CORSMiddleware() gin.HandlerFunc {
 			c.Next()
 		}
 	}
+}
+func extractClaims(c *gin.Context) (jwt.MapClaims, error) {
+	Token := c.GetHeader("Authorization")
+
+	claims, err := token.ExtractClaims(Token)
+	if err != nil || claims == nil {
+		return nil, errors.Wrap(err, "invalid cookie")
+	}
+
+	return claims, nil
 }

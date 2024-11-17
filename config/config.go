@@ -19,9 +19,12 @@ type Config struct {
 	EXPIRED_REFRESH string
 
 	RUN_PORT string
+
+	APP_KEY  string
+	EMAIL string
 }
 
-func NewConfig() Config {
+func NewConfig() *Config {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -41,5 +44,7 @@ func NewConfig() Config {
 	config.EXPIRED_ACCESS = os.Getenv("EXPIRED_ACCESS")
 	config.EXPIRED_REFRESH = os.Getenv("EXPIRED_REFRESH")
 
-	return config
+	config.APP_KEY = os.Getenv("APP_KEY")
+	config.EMAIL = os.Getenv("EMAIL")
+	return &config
 }

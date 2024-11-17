@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-func Run(cfg config.Config) {
+func Run(cfg *config.Config) {
 
 	logger1 := logger.NewLogger()
 

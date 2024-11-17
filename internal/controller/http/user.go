@@ -27,14 +27,13 @@ func newUserController(router *gin.RouterGroup, ts *usecase.TenderService, casbi
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param id path string true "User ID"
 // @Success 200 {array} entity.Tender
 // @Failure 400 {object} entity.Error
 // @Failure 404 {object} entity.Error
 // @Failure 500 {object} entity.Error
 // @Router /users/{id}/tenders [get]
 func (u *userController) getUserTenders(c *gin.Context) {
-	userID := c.Param("id") // Получение ID пользователя из пути
+	userID := c.MustGet("user_id").(string) // Получение ID пользователя из пути
 	if userID == "" {
 		u.log.Error("User ID is missing in request")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "user ID is required"})
@@ -58,14 +57,13 @@ func (u *userController) getUserTenders(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param id path string true "User ID"
 // @Success 200 {array} entity.Bid
 // @Failure 400 {object} entity.Error
 // @Failure 404 {object} entity.Error
 // @Failure 500 {object} entity.Error
 // @Router /users/{id}/bids [get]
 func (u *userController) getUserBids(c *gin.Context) {
-	userID := c.Param("id") // Получение ID пользователя из пути
+	userID := c.MustGet("user_id").(string) // Получение ID пользователя из пути
 	if userID == "" {
 		u.log.Error("User ID is missing in request")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "user ID is required"})

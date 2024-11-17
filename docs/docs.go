@@ -165,7 +165,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.TenderReq"
+                            "$ref": "#/definitions/entity.TenderReq1"
                         }
                     }
                 ],
@@ -472,15 +472,6 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "Get User Bids",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -525,15 +516,6 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "Get User Tenders",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -712,14 +694,11 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.TenderReq": {
+        "entity.TenderReq1": {
             "type": "object",
             "properties": {
                 "budget": {
                     "type": "number"
-                },
-                "client_id": {
-                    "type": "string"
                 },
                 "deadline": {
                     "type": "string"

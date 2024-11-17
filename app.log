@@ -218,3 +218,6 @@
 {"time":"2024-11-17T14:14:42.556464456+05:00","level":"ERROR","msg":"error submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
 {"time":"2024-11-17T14:14:42.556505502+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
 {"time":"2024-11-17T14:14:42.556518032+05:00","level":"ERROR","msg":"Error in submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
+{"time":"2024-11-17T14:43:28.804403442+05:00","level":"INFO","msg":"Add user started","username":"string"}
+{"time":"2024-11-17T14:43:30.31022424+05:00","level":"ERROR","msg":"Error in adding user","error":"failed to create user: pq: duplicate key value violates unique constraint \"users_username_key\""}
+{"time":"2024-11-17T14:43:30.310285155+05:00","level":"ERROR","msg":"Error in creating user","error":"failed to create user: pq: duplicate key value violates unique constraint \"users_username_key\""}
