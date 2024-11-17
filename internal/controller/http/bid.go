@@ -1,12 +1,8 @@
 package http
 
 import (
-<<<<<<< HEAD
-=======
 	"fmt"
 	"github.com/casbin/casbin/v2"
-	"github.com/gin-gonic/gin"
->>>>>>> 29dd3dcb82467032cc2a8820dc54e6aae2a4055a
 	"log/slog"
 	"net/http"
 	"strconv"
