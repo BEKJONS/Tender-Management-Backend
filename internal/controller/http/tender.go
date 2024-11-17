@@ -68,6 +68,7 @@ func (t *tenderRoutes) createTender(c *gin.Context) {
 // @Tags Tender
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param client_id query string false "Client ID to filter tenders"
 // @Success 200 {array} entity.Tender
 // @Failure 500 {object} entity.Error

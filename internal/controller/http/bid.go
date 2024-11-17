@@ -35,6 +35,7 @@ func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, casbin *casbi
 // @Description Contractors can submit bids on open tenders
 // @Tags Bids
 // @Accept json
+// @Security ApiKeyAuth
 // @Produce json
 // @Param id path string true "Tender ID"
 // @Param bid body entity.Bid1 true "Bid details"
@@ -115,6 +116,7 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 // @Tags Bids
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "Tender ID"
 // @Param price query float64 false "Filter by price"
 // @Param delivery_time query int false "Filter by delivery time"

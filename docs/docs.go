@@ -63,17 +63,6 @@ const docTemplate = `{
         },
         "/auth/user/register": {
             "post": {
-                "description": "Register a new user account",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Create User",
                 "parameters": [
                     {
                         "description": "Create user",
@@ -109,6 +98,11 @@ const docTemplate = `{
         },
         "/tenders": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "List all tenders for a specific client",
                 "consumes": [
                     "application/json"
@@ -282,6 +276,11 @@ const docTemplate = `{
         },
         "/tenders/{id}/bids": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of bids for a tender with optional filters for price, delivery time, and comments or status.",
                 "consumes": [
                     "application/json"
@@ -357,6 +356,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Contractors can submit bids on open tenders",
                 "consumes": [
                     "application/json"
@@ -505,6 +509,11 @@ const docTemplate = `{
         },
         "/users/{id}/tenders": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all tenders associated with a specific user.",
                 "consumes": [
                     "application/json"
