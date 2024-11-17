@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"fmt"
 	"log/slog"
 	"tender_management/internal/entity"
 )
@@ -25,10 +26,13 @@ func (b *BidService) SubmitBid(bid entity.Bid) (entity.Bid, error) {
 		b.log.Error("error submitting bid", "error", errors.New("price must be greater than 0"))
 		return entity.Bid{}, errors.New("price must be greater than 0")
 	}
+
 	if bid.DeliveryTime <= 0 {
 		b.log.Error("error submitting bid", "error", errors.New("delivery time must be greater than 0"))
 		return entity.Bid{}, errors.New("delivery time must be greater than 0")
 	}
+
+	fmt.Println(bid.TenderID)
 
 	// Submit the bid to the repo
 	newBid, err := b.bidRepo.SubmitBid(bid)

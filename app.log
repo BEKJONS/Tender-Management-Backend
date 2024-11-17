@@ -153,3 +153,68 @@
 {"time":"2024-11-17T13:50:44.033277732+05:00","level":"ERROR","msg":"Tender ID is missing in the request"}
 {"time":"2024-11-17T13:51:48.529015701+05:00","level":"ERROR","msg":"Tender ID is missing in the request"}
 {"time":"2024-11-17T13:52:29.101502437+05:00","level":"ERROR","msg":"Tender ID is missing in the request"}
+{"time":"2024-11-17T13:55:12.221592355+05:00","level":"INFO","msg":"Add user started","username":"string"}
+{"time":"2024-11-17T13:55:16.063955342+05:00","level":"INFO","msg":"Add user ended","username":"string"}
+{"time":"2024-11-17T13:55:57.278572474+05:00","level":"ERROR","msg":"Error in getting from body","error":"parsing time \"string\" as \"2006-01-02T15:04:05Z07:00\": cannot parse \"string\" as \"2006\""}
+{"time":"2024-11-17T13:56:29.179677231+05:00","level":"ERROR","msg":"Error in getting from body","error":"parsing time \"2025-01-02\" as \"2006-01-02T15:04:05Z07:00\": cannot parse \"\" as \"T\""}
+{"time":"2024-11-17T13:56:52.351784854+05:00","level":"ERROR","msg":"Error in getting from body","error":"parsing time \"2025-01-02T15:04:05Z07:00\": extra text: \"07:00\""}
+{"time":"2024-11-17T13:58:09.754903502+05:00","level":"ERROR","msg":"Error in getting from body","error":"parsing time \"2024-12-31 23:59:59.000000 +00:00\" as \"2006-01-02T15:04:05Z07:00\": cannot parse \" 23:59:59.000000 +00:00\" as \"T\""}
+{"time":"2024-11-17T13:58:21.345025448+05:00","level":"ERROR","msg":"Error in getting from body","error":"parsing time \"2025-12-31 23:59:59.000000 +00:00\" as \"2006-01-02T15:04:05Z07:00\": cannot parse \" 23:59:59.000000 +00:00\" as \"T\""}
+{"time":"2024-11-17T14:00:17.628418273+05:00","level":"INFO","msg":"started creating tender","title":"string"}
+{"time":"2024-11-17T14:00:17.701289202+05:00","level":"INFO","msg":"ended creating tender","title":"string"}
+{"time":"2024-11-17T14:02:05.737821443+05:00","level":"INFO","msg":"started creating tender","title":"string"}
+{"time":"2024-11-17T14:02:05.745450809+05:00","level":"INFO","msg":"Tender successfully added to Redis list","tenderID":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:02:05.746227179+05:00","level":"INFO","msg":"Tender successfully added to Redis list","tenderID":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:02:05.746271353+05:00","level":"INFO","msg":"ended creating tender","title":"string"}
+{"time":"2024-11-17T14:02:37.458203259+05:00","level":"ERROR","msg":"Tender ID is missing in the request"}
+{"time":"2024-11-17T14:06:26.427834167+05:00","level":"INFO","msg":"Submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598","bid":{"price":5,"delivery_time":5,"comments":"string","status":"string"}}
+{"time":"2024-11-17T14:06:26.427940852+05:00","level":"INFO","msg":"started submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:06:26.430145907+05:00","level":"ERROR","msg":"error submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
+{"time":"2024-11-17T14:06:26.430188411+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:06:26.430200682+05:00","level":"ERROR","msg":"Error in submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
+{"time":"2024-11-17T14:06:53.627064771+05:00","level":"INFO","msg":"started listing tenders","clientID":""}
+{"time":"2024-11-17T14:06:53.66296584+05:00","level":"INFO","msg":"Successfully retrieved tenders from Redis","count":1}
+{"time":"2024-11-17T14:06:53.663034975+05:00","level":"INFO","msg":"ended listing tenders","clientID":""}
+{"time":"2024-11-17T14:07:09.058891562+05:00","level":"INFO","msg":"Submitting bid","tender_id":"{id}","bid":{"price":0,"delivery_time":0,"comments":"string","status":"string"}}
+{"time":"2024-11-17T14:07:09.058959609+05:00","level":"INFO","msg":"started submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:07:09.058972266+05:00","level":"ERROR","msg":"error submitting bid","error":"price must be greater than 0"}
+{"time":"2024-11-17T14:07:09.058986335+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:07:09.05901318+05:00","level":"ERROR","msg":"Error in submitting bid","error":"price must be greater than 0"}
+{"time":"2024-11-17T14:07:24.55741986+05:00","level":"INFO","msg":"Submitting bid","tender_id":"{id}","bid":{"price":5,"delivery_time":0,"comments":"string","status":"string"}}
+{"time":"2024-11-17T14:07:24.557480281+05:00","level":"INFO","msg":"started submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:07:24.557487576+05:00","level":"ERROR","msg":"error submitting bid","error":"delivery time must be greater than 0"}
+{"time":"2024-11-17T14:07:24.557494356+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:07:24.557499878+05:00","level":"ERROR","msg":"Error in submitting bid","error":"delivery time must be greater than 0"}
+{"time":"2024-11-17T14:07:33.461266077+05:00","level":"INFO","msg":"Submitting bid","tender_id":"{id}","bid":{"price":5,"delivery_time":5,"comments":"string","status":"string"}}
+{"time":"2024-11-17T14:07:33.461347936+05:00","level":"INFO","msg":"started submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:07:33.461968117+05:00","level":"ERROR","msg":"error submitting bid","error":"pq: invalid input syntax for type uuid: \"{id}\""}
+{"time":"2024-11-17T14:07:33.462003965+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:07:33.462015674+05:00","level":"ERROR","msg":"Error in submitting bid","error":"pq: invalid input syntax for type uuid: \"{id}\""}
+{"time":"2024-11-17T14:09:04.108586145+05:00","level":"INFO","msg":"Submitting bid","tender_id":"{id}","bid":{"price":5,"delivery_time":5,"comments":"string","status":"string"}}
+{"time":"2024-11-17T14:09:04.108671688+05:00","level":"INFO","msg":"started submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:09:04.109810734+05:00","level":"ERROR","msg":"error submitting bid","error":"pq: invalid input syntax for type uuid: \"{id}\""}
+{"time":"2024-11-17T14:09:04.109851573+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:09:04.109862843+05:00","level":"ERROR","msg":"Error in submitting bid","error":"pq: invalid input syntax for type uuid: \"{id}\""}
+{"time":"2024-11-17T14:11:21.548875121+05:00","level":"INFO","msg":"Submitting bid","tender_id":"{id}","bid":{"price":5,"delivery_time":5,"comments":"string","status":"string"}}
+{"time":"2024-11-17T14:11:21.548964146+05:00","level":"INFO","msg":"started submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:11:21.550485765+05:00","level":"ERROR","msg":"error submitting bid","error":"pq: invalid input syntax for type uuid: \"{id}\""}
+{"time":"2024-11-17T14:11:21.550524943+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"{id}"}
+{"time":"2024-11-17T14:11:21.550537804+05:00","level":"ERROR","msg":"Error in submitting bid","error":"pq: invalid input syntax for type uuid: \"{id}\""}
+{"time":"2024-11-17T14:11:52.151360321+05:00","level":"INFO","msg":"started listing tenders","clientID":""}
+{"time":"2024-11-17T14:11:52.1518415+05:00","level":"INFO","msg":"Successfully retrieved tenders from Redis","count":1}
+{"time":"2024-11-17T14:11:52.151872486+05:00","level":"INFO","msg":"ended listing tenders","clientID":""}
+{"time":"2024-11-17T14:12:24.690979285+05:00","level":"INFO","msg":"Submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598","bid":{"price":5,"delivery_time":5,"comments":"string","status":"string"}}
+{"time":"2024-11-17T14:12:24.691078841+05:00","level":"INFO","msg":"started submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:12:24.692452517+05:00","level":"ERROR","msg":"error submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
+{"time":"2024-11-17T14:12:24.692498826+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:12:24.692507607+05:00","level":"ERROR","msg":"Error in submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
+{"time":"2024-11-17T14:12:57.783895948+05:00","level":"INFO","msg":"Submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598","bid":{"price":5,"delivery_time":5,"comments":"string","status":"pending"}}
+{"time":"2024-11-17T14:12:57.783959481+05:00","level":"INFO","msg":"started submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:12:57.784544549+05:00","level":"ERROR","msg":"error submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
+{"time":"2024-11-17T14:12:57.784574055+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:12:57.784587032+05:00","level":"ERROR","msg":"Error in submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
+{"time":"2024-11-17T14:14:42.55505735+05:00","level":"INFO","msg":"Submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598","bid":{"price":5,"delivery_time":5,"comments":"string","status":"pending"}}
+{"time":"2024-11-17T14:14:42.555156235+05:00","level":"INFO","msg":"started submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:14:42.556464456+05:00","level":"ERROR","msg":"error submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
+{"time":"2024-11-17T14:14:42.556505502+05:00","level":"INFO","msg":"ended submitting bid","tender_id":"93729072-9a27-444a-9c37-dcae63b0d598"}
+{"time":"2024-11-17T14:14:42.556518032+05:00","level":"ERROR","msg":"Error in submitting bid","error":"pq: invalid input syntax for type uuid: \"\""}
