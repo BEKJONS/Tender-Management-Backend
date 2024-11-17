@@ -326,6 +326,11 @@ paths:
       description: Get a list of bids for a tender with optional filters for price,
         delivery time, and comments or status.
       parameters:
+      - description: Tender ID
+        in: path
+        name: id
+        required: true
+        type: string
       - description: Filter by price
         in: query
         name: price

@@ -295,6 +295,13 @@ const docTemplate = `{
                 "summary": "Get Bids for Tender",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Tender ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
                         "type": "number",
                         "description": "Filter by price",
                         "name": "price",
