@@ -371,7 +371,6 @@ paths:
       summary: Get Bids for Tender
       tags:
       - Bids
-  /tenders/{tender_id}/bids:
     post:
       consumes:
       - application/json
@@ -379,7 +378,7 @@ paths:
       parameters:
       - description: Tender ID
         in: path
-        name: tender_id
+        name: id
         required: true
         type: string
       - description: Bid details

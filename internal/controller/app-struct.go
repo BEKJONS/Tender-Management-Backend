@@ -5,7 +5,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"log/slog"
 	"tender_management/internal/usecase"
-	"tender_management/internal/usecase/cashing"
+	"tender_management/internal/usecase/redis/cashing"
 	"tender_management/internal/usecase/repo"
 )
 

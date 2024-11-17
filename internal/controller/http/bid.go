@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"log/slog"
@@ -28,21 +29,23 @@ func newBidRoutes(router *gin.RouterGroup, us *usecase.BidService, casbin *casbi
 // @Tags Bids
 // @Accept json
 // @Produce json
-// @Param tender_id path string true "Tender ID"
+// @Param id path string true "Tender ID"
 // @Param bid body entity.Bid1 true "Bid details"
 // @Success 201 {object} entity.Bid
 // @Failure 400 {object} entity.Error
 // @Failure 500 {object} entity.Error
-// @Router /tenders/{tender_id}/bids [post]
+// @Router /tenders/{id}/bids [post]
 func (b *bidRoutes) submitBid(c *gin.Context) {
 	var bid entity.Bid1
 
-	tenderID := c.Param("tender_id")
+	tenderID := c.Param("id")
 	if tenderID == "" {
 		b.log.Error("Tender ID is missing in the request")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Tender ID is missing"})
 		return
 	}
+
+	fmt.Println(tenderID)
 
 	if err := c.ShouldBindJSON(&bid); err != nil {
 		b.log.Error("Error parsing bid payload", "error", err)
@@ -63,7 +66,7 @@ func (b *bidRoutes) submitBid(c *gin.Context) {
 	})
 	if err != nil {
 		b.log.Error("Error in submitting bid", "error", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to submit bid", "details": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to submit bid", "details": err.Error()})
 		return
 	}
 

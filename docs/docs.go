@@ -355,6 +355,57 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Contractors can submit bids on open tenders",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bids"
+                ],
+                "summary": "Submit a bid on a tender",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Tender ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Bid details",
+                        "name": "bid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Bid1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Bid"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Error"
+                        }
+                    }
+                }
             }
         },
         "/tenders/{id}/{status}": {
@@ -391,59 +442,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entity.Message"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/tenders/{tender_id}/bids": {
-            "post": {
-                "description": "Contractors can submit bids on open tenders",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Bids"
-                ],
-                "summary": "Submit a bid on a tender",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Tender ID",
-                        "name": "tender_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Bid details",
-                        "name": "bid",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.Bid1"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Bid"
                         }
                     },
                     "400": {

@@ -1,4 +1,4 @@
-package cashing
+package redis
 
 import (
 	"context"

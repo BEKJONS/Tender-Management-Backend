@@ -15,7 +15,7 @@ type TenderCash struct {
 }
 
 func NewTenderCash(log *slog.Logger, redis *redis.Client) *TenderCash {
-	return &TenderCash{}
+	return &TenderCash{log: log, redis: redis}
 }
 
 func (t *TenderCash) SaveNewTender(in *entity.Tender) error {
