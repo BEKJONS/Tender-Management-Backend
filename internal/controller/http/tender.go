@@ -35,6 +35,7 @@ func newTenderRoutes(router *gin.RouterGroup, ts *usecase.TenderService, casbin 
 // @Tags Tender
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param CreateTender body entity.TenderReq1 true "Create tender"
 // @Success 201 {object} entity.Tender
 // @Failure 400 {object} entity.Error
@@ -92,6 +93,7 @@ func (t *tenderRoutes) listTenders(c *gin.Context) {
 // @Tags Tender
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "Tender ID"
 // @Param status path string true "Update status"
 // @Success 200 {object} entity.Message
@@ -121,6 +123,7 @@ func (t *tenderRoutes) updateTenderStatus(c *gin.Context) {
 // @Tags Tender
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "Tender ID"
 // @Success 200 {object} entity.Message
 // @Failure 500 {object} entity.Error
@@ -145,6 +148,7 @@ func (t *tenderRoutes) deleteTender(c *gin.Context) {
 // @Tags Tender
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param id path string true "Tender ID"
 // @Param bid_id path string true "Bid ID"
 // @Success 200 {object} entity.AwardedRes

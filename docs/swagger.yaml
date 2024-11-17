@@ -215,6 +215,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Create Tender
       tags:
       - Tender
@@ -240,6 +242,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Delete Tender
       tags:
       - Tender
@@ -274,6 +278,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Update Tender Status
       tags:
       - Tender
@@ -308,6 +314,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Award Tender
       tags:
       - Tender

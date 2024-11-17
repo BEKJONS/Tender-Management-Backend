@@ -141,6 +141,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a new tender for a client with details like title, description, deadline, and budget.",
                 "consumes": [
                     "application/json"
@@ -187,6 +192,11 @@ const docTemplate = `{
         },
         "/tenders/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete a tender by its ID",
                 "consumes": [
                     "application/json"
@@ -225,6 +235,11 @@ const docTemplate = `{
         },
         "/tenders/{id}/award/{bid_id}": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Award a bid to a specific tender by tender ID and bid ID.",
                 "consumes": [
                     "application/json"
@@ -414,6 +429,11 @@ const docTemplate = `{
         },
         "/tenders/{id}/{status}": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update the status of a tender (open, closed, awarded)",
                 "consumes": [
                     "application/json"
